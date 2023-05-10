@@ -18,9 +18,11 @@ to create an account.
    3. Multi Bet
 3. API Routes
    1. TODO
-4. Database Relationship
+4. Project Structure
    1. TODO
-5. FAQ
+5. Database Relationship
+   1. TODO
+6. FAQ
 
 ## Dependencies
 
@@ -78,6 +80,67 @@ Bellow you can see our methods.
    "profit": "1.00",
    "bet_status": "success"
 }
+```
+
+## Project Structure
+
+Here you can see the project tree for `source` and `tests` folders.
+I used the structure of a `html` code. Each tag
+means a package.
+
+```html
+<src>
+   <api>
+      <data>
+         data.py
+         __init__.py
+      </data>
+      <models>
+         __init__.py
+      </models>
+      <repository>
+         __init__.py
+      </repository>
+      <resource>
+         __init__.py
+      </resource>
+      <routes>
+         __init__.py
+      </routes>
+      __init__.py
+   </api>
+   <utils>
+      __init__.py
+   </utils>
+   __init__.py
+</src>
+```
+
+```html
+<test>
+   <api>
+      <data>
+         __init__.py
+      </data>
+      <models>
+         __init__.py
+      </models>
+      <repository>
+         __init__.py
+      </repository>
+      <resource>
+         __init__.py
+      </resource>
+      <routes>
+         __init__.py
+      </routes>
+      __init__.py
+   </api>
+   <mock>
+      __init__.py
+   </mock>
+   __init__.py
+</test>
 ```
 
 ## API Routes
