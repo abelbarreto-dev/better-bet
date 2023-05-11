@@ -15,6 +15,11 @@ class Login(BaseModel):
     id: Optional[int] = None
 
 
+class LoginAuth(BaseModel):
+    username: str
+    password: str
+
+
 class SingleBet(BaseModel):
     id_login: int
     odd: Decimal
