@@ -64,34 +64,39 @@ def get_filter_multi(date_from: datetime, date_to: datetime) -> Any:
 
 @ROUTER.get(ROUTES["get_profits_single"])
 def get_profits_single(profits_single: Request) -> Any:
-    return None
+    return profits_single
 
 
 @ROUTER.get(ROUTES["get_profits_multi"])
 def get_profits_multi(profits_multi: Request) -> Any:
-    return None
+    return profits_multi
 
 
 @ROUTER.get(ROUTES["get_lost_single"])
 def get_lost_single(lost_single: Request) -> Any:
-    return None
+    return lost_single
 
 
 @ROUTER.get(ROUTES["get_lost_multi"])
 def get_lost_multi(lost_multi: Request) -> Any:
-    return None
+    return lost_multi
 
 
 @ROUTER.get(ROUTES["get_all_profits"])
 def get_all_profits(all_profits: Request) -> Any:
-    return None
+    return all_profits
 
 
 @ROUTER.get(ROUTES["get_all_lost"])
 def get_all_lost(all_lost: Request) -> Any:
-    return None
+    return all_lost
 
 
 @ROUTER.get(ROUTES["get_odds_success"])
 def get_odds_success(odds_success: Request) -> Any:
-    return None
+    return odds_success
+
+
+@ROUTER.post(ROUTES["post_compound_interest"])
+def post_compound_interest(compound_interest: CompoundInterest) -> Any:
+    return compound_interest
