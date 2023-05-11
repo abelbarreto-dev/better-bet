@@ -5,6 +5,8 @@ from datetime import datetime
 
 from src.api.routes.routes import ROUTES
 
+from src.api.controller.controller import Controller
+
 from src.api.models.api_models import (
     Login,
     LoginAuth,
@@ -19,12 +21,12 @@ ROUTER = APIRouter()
 
 @ROUTER.post(ROUTES["post_login"])
 def post_login(login: Login) -> Any:
-    return login
+    return Controller.post_login(login=login)
 
 
 @ROUTER.post(ROUTES["post_login_auth"])
 def post_login_auth(login_auth: LoginAuth) -> Any:
-    return login_auth
+    return Controller.post_login_auth(login_auth=login_auth)
 
 
 @ROUTER.post(ROUTES["post_single_bet"])
@@ -39,7 +41,7 @@ def post_multi_bet(multi_bet: MultiBet) -> Any:
 
 @ROUTER.patch(ROUTES["patch_login_passwd"])
 def patch_login_passwd(login_passwd: Request) -> Any:
-    return login_passwd
+    return Controller.patch_login_passwd(login_passwd=login_passwd)
 
 
 @ROUTER.patch(ROUTES["patch_single_bet"])
