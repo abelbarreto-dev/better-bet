@@ -55,3 +55,23 @@ def patch_multi_bet(multi_bet: Request) -> Any:
 @ROUTER.get(ROUTES["get_filter_single"])
 def get_filter_single(date_from: datetime, date_to: datetime) -> Any:
     return None
+
+
+@ROUTER.get(ROUTES["get_filter_multi"])
+def get_filter_multi(date_from: datetime, date_to: datetime) -> Any:
+    return None
+
+
+@ROUTER.get(ROUTES["get_profits_single"])
+def get_profits_single(profits_single: Request) -> Any:
+    return None
+
+
+@ROUTER.get(ROUTES["get_profits_multi"])
+def get_profits_multi(profits_multi: Request) -> Any:
+    return None
+
+
+@ROUTER.get(ROUTES["get_lost_single"])
+def get_lost_single(lost_single: Request) -> Any:
+    return None
