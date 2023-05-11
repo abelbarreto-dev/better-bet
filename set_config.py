@@ -1,7 +1,7 @@
 from json import loads as to_dict, dumps as to_json
 
 
-FILE = "settings.json"
+FILE = "../../settings.json"
 
 
 def get_settings() -> dict:

@@ -17,17 +17,17 @@ class Login(BaseModel):
 
 class SingleBet(BaseModel):
     id_login: int
-    home_team: str
-    away_team: str
-    team_bet: str
     odd: Decimal
     value_invest: Decimal
+    description: Optional[str] = None
+    home_team: Optional[str] = None
+    away_team: Optional[str] = None
+    team_bet: Optional[str] = None
     id: Optional[int] = None
     profit: Optional[Decimal] = None
     potential_earnings: Optional[Decimal] = None
     total_amount: Optional[Decimal] = None
     bet_status: Optional[BetStatus] = None
-    description: Optional[str] = None
     create_datetime: Optional[datetime] = None
     finish_datetime: Optional[datetime] = None
     operator_fee: Optional[Decimal] = None
@@ -35,17 +35,17 @@ class SingleBet(BaseModel):
 
 class MultiBet(BaseModel):
     id_login: int
-    home_team: str
-    away_team: str
-    team_bet: str
     value_invest: Decimal
+    description: Optional[str] = None
+    home_team: Optional[str] = None
+    away_team: Optional[str] = None
+    team_bet: Optional[str] = None
     multi_odds: List[Decimal] = None
     id: Optional[int] = None
     profit: Optional[Decimal] = None
     potential_earnings: Optional[Decimal] = None
     total_amount: Optional[Decimal] = None
     bet_status: Optional[BetStatus] = None
-    description: Optional[str] = None
     create_datetime: Optional[datetime] = None
     finish_datetime: Optional[datetime] = None
     operator_fee: Optional[Decimal] = None

@@ -18,7 +18,7 @@ def get_mysql_credentials() -> dict:
     return dict(
         host=environ.get("DATABASE_HOST"),
         port=environ.get("DATABASE_PORT"),
-        name=get_database_name(),
+        database=get_database_name(),
         username=environ.get("DATABASE_USER"),
         passwd=environ.get("DATABASE_PASSWD")
     )
