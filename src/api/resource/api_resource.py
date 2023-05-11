@@ -75,3 +75,23 @@ def get_profits_multi(profits_multi: Request) -> Any:
 @ROUTER.get(ROUTES["get_lost_single"])
 def get_lost_single(lost_single: Request) -> Any:
     return None
+
+
+@ROUTER.get(ROUTES["get_lost_multi"])
+def get_lost_multi(lost_multi: Request) -> Any:
+    return None
+
+
+@ROUTER.get(ROUTES["get_all_profits"])
+def get_all_profits(all_profits: Request) -> Any:
+    return None
+
+
+@ROUTER.get(ROUTES["get_all_lost"])
+def get_all_lost(all_lost: Request) -> Any:
+    return None
+
+
+@ROUTER.get(ROUTES["get_odds_success"])
+def get_odds_success(odds_success: Request) -> Any:
+    return None
