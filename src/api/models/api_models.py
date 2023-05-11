@@ -1,5 +1,5 @@
 from datetime import datetime
-from enum import Enum
+from src.utils.bet_status import BetStatus
 
 from typing import Optional, List
 
@@ -15,11 +15,6 @@ class Login(BaseModel):
     id: Optional[int] = None
 
 
-class BetStatus(Enum):
-    SUCCESS = 'success'
-    FAILURE = 'failure'
-
-
 class SingleBet(BaseModel):
     id_login: int
     home_team: str
@@ -29,10 +24,13 @@ class SingleBet(BaseModel):
     value_invest: Decimal
     id: Optional[int] = None
     profit: Optional[Decimal] = None
+    potential_earnings: Optional[Decimal] = None
+    total_amount: Optional[Decimal] = None
     bet_status: Optional[BetStatus] = None
     description: Optional[str] = None
     create_datetime: Optional[datetime] = None
     finish_datetime: Optional[datetime] = None
+    operator_fee: Optional[Decimal] = None
 
 
 class MultiBet(BaseModel):
@@ -44,7 +42,17 @@ class MultiBet(BaseModel):
     multi_odds: List[Decimal] = None
     id: Optional[int] = None
     profit: Optional[Decimal] = None
+    potential_earnings: Optional[Decimal] = None
+    total_amount: Optional[Decimal] = None
     bet_status: Optional[BetStatus] = None
     description: Optional[str] = None
     create_datetime: Optional[datetime] = None
     finish_datetime: Optional[datetime] = None
+    operator_fee: Optional[Decimal] = None
+
+
+class CompoundInterest(BaseModel):
+    capital: Decimal
+    interest_rate: Decimal
+    time_opp: Decimal
+    amount: Optional[Decimal] = None
