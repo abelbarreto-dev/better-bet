@@ -5,4 +5,6 @@ from src.api.resource.api_resource import ROUTER
 
 better_bet_api = FastAPI()
 
-better_bet_api.include_router(ROUTER)
+
+if __name__ == '__main__':
+    better_bet_api.include_router(ROUTER)
