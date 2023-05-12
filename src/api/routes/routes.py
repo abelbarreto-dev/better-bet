@@ -3,7 +3,6 @@ ROUTES = {
     "post_login_auth": "/login/auth",
     "post_single_bet": "/bet/single",
     "post_multi_bet": "/bet/multi",
-    "patch_login_passwd": "/login/recovery",
     "patch_single_bet": "/bet/single",
     "patch_multi_bet": "/bet/multi",
     "get_filter_single": "/bet/single/{date_from}/{date_to}",

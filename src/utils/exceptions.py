@@ -1,3 +1,6 @@
+from fastapi import HTTPException
+
+
 class PlayerNameException(ValueError):
     def __init__(self):
         super().__init__("error: player_name is an invalid pattern")
@@ -41,3 +44,11 @@ class TeamBetException(ValueError):
 class DatetimeSmallException(ValueError):
     def __init__(self, what_dtt_1: str, what_dtt_2: str):
         super().__init__(f"error: {what_dtt_1} can't be greater than {what_dtt_2}")
+
+
+class BadRequest(HTTPException):
+    def __init__(self, message: str):
+        super().__init__(
+            status_code=400,
+            detail={"message": message}
+        )
