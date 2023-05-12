@@ -10,6 +10,18 @@ from src.api.models.api_models import (
     MultiBet
 )
 
+from src.utils.exceptions import (
+    PlayerNameException,
+    UsernameException,
+    PasswordException,
+    DescriptionException,
+    OddException,
+    MoneyException,
+    PercentException,
+    TeamBetException,
+    DatetimeSmallException
+)
+
 
 class Regex:
     username = r"^[_a-z]{1,64}$"
@@ -76,42 +88,42 @@ def multi_bet_checker(multi_bet: MultiBet) -> None:
 
 def team_checker(team: str, what_team: str) -> None:
     if team is not None and not match(Regex.team_bet, team):
-        raise ValueError(f"error: {what_team} is in invalid pattern")
+        raise TeamBetException(what_team)
 
 
 def player_name_checker(player_name: str) -> None:
     if not match(Regex.player_name, player_name):
-        raise ValueError("error: player_name is in invalid pattern")
+        raise PlayerNameException()
 
 
 def username_checker(username: str) -> None:
     if not match(Regex.username, username):
-        raise ValueError("error: username is in invalid pattern")
+        raise UsernameException()
 
 
 def password_checker(password: str) -> None:
     if not match(Regex.password, password):
-        raise ValueError("error: password is invalid")
+        raise PasswordException()
 
 
 def description_checker(description: str) -> None:
     if description is not None and not match(Regex.description, description):
-        raise ValueError("error: description is invalid")
+        raise DescriptionException()
 
 
 def money_checker(money: Decimal, what_money: str) -> None:
     if money is not None and not match(Regex.money, str(money)):
-        raise ValueError(f"error: {what_money} value is in invalid pattern")
+        raise MoneyException(what_money)
 
 
 def percent_checker(percent: Decimal, what_percent: str) -> None:
     if percent is not None and not match(Regex.percent, str(percent)):
-        raise ValueError(f"error: {what_percent} value is in invalid pattern")
+        raise PercentException(what_percent)
 
 
 def odd_checker(odd: Decimal) -> None:
     if not match(Regex.odd, str(odd)):
-        raise ValueError("error: odd value is in invalid pattern")
+        raise OddException()
 
 
 def datetime_small_than(
@@ -121,4 +133,4 @@ def datetime_small_than(
     what_dtt_2: str
 ) -> None:
     if datetime_2 is not None and datetime_1 > datetime_2:
-        raise ValueError(f"error: {what_dtt_1} can't be small than {what_dtt_2}")
+        raise DatetimeSmallException(what_dtt_1, what_dtt_2)

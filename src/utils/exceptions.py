@@ -23,41 +23,21 @@ class OddException(ValueError):
         super().__init__("error: odd value is an invalid pattern")
 
 
-class ValueInvestException(ValueError):
-    def __init__(self):
-        super().__init__("error: value_invest is an invalid pattern")
+class MoneyException(ValueError):
+    def __init__(self, what_money: str):
+        super().__init__(f"error: {what_money} is an invalid pattern")
 
 
-class ProfitException(ValueError):
-    def __init__(self):
-        super().__init__("error: profit is in an invalid pattern")
-
-
-class PotentialEarningsException(ValueError):
-    def __init__(self):
-        super().__init__("error: potential_earnings is in an invalid pattern")
-
-
-class TotalAmountException(ValueError):
-    def __init__(self):
-        super().__init__("error: total_amount is in an invalid pattern")
-
-
-class OperatorFeeException(ValueError):
-    def __init__(self):
-        super().__init__("error: operator_fee is in an invalid pattern")
-
-
-class HomeTeamException(ValueError):
-    def __init__(self):
-        super().__init__("error: home_team is an invalid pattern")
-
-
-class AwayTeamException(ValueError):
-    def __init__(self):
-        super().__init__("error: away_team is an invalid pattern")
+class PercentException(ValueError):
+    def __init__(self, what_percent: str):
+        super().__init__(f"error: {what_percent} is in an invalid pattern")
 
 
 class TeamBetException(ValueError):
-    def __init__(self):
-        super().__init__("error: team_bet is an invalid pattern")
+    def __init__(self, what_team: str):
+        super().__init__(f"error: {what_team} is an invalid pattern")
+
+
+class DatetimeSmallException(ValueError):
+    def __init__(self, what_dtt_1: str, what_dtt_2: str):
+        super().__init__(f"error: {what_dtt_1} can't be greater than {what_dtt_2}")
