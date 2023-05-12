@@ -46,6 +46,11 @@ class DatetimeSmallException(ValueError):
         super().__init__(f"error: {what_dtt_1} can't be greater than {what_dtt_2}")
 
 
+class DatetimeNoneException(ValueError):
+    def __init__(self, what_dtt: str):
+        super().__init__(f"error: {what_dtt} can't be null")
+
+
 class BadRequest(HTTPException):
     def __init__(self, message: str):
         super().__init__(

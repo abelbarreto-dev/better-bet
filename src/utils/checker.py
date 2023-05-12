@@ -10,6 +10,8 @@ from src.api.models.api_models import (
     MultiBet
 )
 
+from src.api.models.request_body import BetPatchBody
+
 from src.utils.exceptions import (
     PlayerNameException,
     UsernameException,
@@ -19,6 +21,7 @@ from src.utils.exceptions import (
     MoneyException,
     PercentException,
     TeamBetException,
+    DatetimeNoneException,
     DatetimeSmallException
 )
 
@@ -86,6 +89,20 @@ def multi_bet_checker(multi_bet: MultiBet) -> None:
     )
 
 
+def single_bet_patch_checker(single_bet: BetPatchBody) -> None:
+    percent_checker(single_bet.operator_fee, "operator_fee")
+    money_checker(single_bet.total_amount, "total_amount")
+    money_checker(single_bet.profit, "profit")
+    datetime_none_checker(single_bet.finish_datetime, "finish_datetime")
+
+
+def multi_bet_patch_checker(multi_bet: BetPatchBody) -> None:
+    percent_checker(multi_bet.operator_fee, "operator_fee")
+    money_checker(multi_bet.total_amount, "total_amount")
+    money_checker(multi_bet.profit, "profit")
+    datetime_none_checker(multi_bet.finish_datetime, "finish_datetime")
+
+
 def team_checker(team: str, what_team: str) -> None:
     if team is not None and not match(Regex.team_bet, team):
         raise TeamBetException(what_team)
@@ -124,6 +141,11 @@ def percent_checker(percent: Decimal, what_percent: str) -> None:
 def odd_checker(odd: Decimal) -> None:
     if not match(Regex.odd, str(odd)):
         raise OddException()
+
+
+def datetime_none_checker(datetime_test: datetime.datetime, what_dtt: str) -> None:
+    if datetime_test is None:
+        raise DatetimeNoneException(what_dtt)
 
 
 def datetime_small_than(
