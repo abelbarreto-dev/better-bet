@@ -6,7 +6,9 @@ from fastapi import Request
 
 from src.api.models.api_models import (
     Login,
-    LoginAuth
+    LoginAuth,
+    SingleBet,
+    MultiBet,
 )
 
 from src.utils.exceptions import (
@@ -16,6 +18,8 @@ from src.utils.exceptions import (
 from src.utils.checker import (
     create_login_checker,
     login_auth_checker,
+    single_bet_checker,
+    multi_bet_checker
 )
 
 
@@ -44,3 +48,25 @@ class Controller:
             login_auth_checker(login_auth)
         except ValueError as ve:
             raise BadRequest(ve.args[0])
+
+    @classmethod
+    async def post_single_bet(cls, single_bet: SingleBet) -> Any:
+        try:
+            single_bet_checker(single_bet)
+        except ValueError as ve:
+            raise BadRequest(ve.args[0])
+
+    @classmethod
+    async def post_multi_bet(cls, multi_bet: MultiBet) -> Any:
+        try:
+            multi_bet_checker(multi_bet)
+        except ValueError as ve:
+            raise BadRequest(ve.args[0])
+
+    @classmethod
+    async def patch_single_bet(cls, single_bet: Request) -> Any:
+        return single_bet
+
+    @classmethod
+    async def patch_multi_bet(cls, multi_bet: Request) -> Any:
+        return multi_bet

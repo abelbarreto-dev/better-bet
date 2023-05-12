@@ -31,22 +31,22 @@ async def post_login_auth(login_auth: LoginAuth) -> Any:
 
 @ROUTER.post(ROUTES["post_single_bet"])
 async def post_single_bet(single_bet: SingleBet) -> Any:
-    return single_bet
+    return await Controller.post_single_bet(single_bet)
 
 
 @ROUTER.post(ROUTES["post_multi_bet"])
 async def post_multi_bet(multi_bet: MultiBet) -> Any:
-    return multi_bet
+    return await Controller.post_multi_bet(multi_bet)
 
 
 @ROUTER.patch(ROUTES["patch_single_bet"])
 async def patch_single_bet(single_bet: Request) -> Any:
-    return single_bet
+    return await Controller.patch_single_bet(single_bet)
 
 
 @ROUTER.patch(ROUTES["patch_multi_bet"])
 async def patch_multi_bet(multi_bet: Request) -> Any:
-    return multi_bet
+    return await Controller.patch_multi_bet(multi_bet)
 
 
 @ROUTER.get(ROUTES["get_filter_single"])
