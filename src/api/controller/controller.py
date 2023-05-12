@@ -32,14 +32,14 @@ class Controller:
         return data_dict
 
     @classmethod
-    def post_login(cls, login: Login) -> Any:
+    async def post_login(cls, login: Login) -> Any:
         try:
             create_login_checker(login)
         except ValueError as ve:
             raise BadRequest(ve.args[0])
 
     @classmethod
-    def post_login_auth(cls, login_auth: LoginAuth) -> Any:
+    async def post_login_auth(cls, login_auth: LoginAuth) -> Any:
         try:
             login_auth_checker(login_auth)
         except ValueError as ve:
