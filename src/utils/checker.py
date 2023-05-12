@@ -7,8 +7,11 @@ from src.api.models.api_models import (
     Login,
     LoginAuth,
     SingleBet,
-    MultiBet
+    MultiBet,
+    CompoundInterest
 )
+
+from src.api.models.request_body import BetPatchBody
 
 from src.utils.exceptions import (
     PlayerNameException,
@@ -19,6 +22,8 @@ from src.utils.exceptions import (
     MoneyException,
     PercentException,
     TeamBetException,
+    DatetimeNoneException,
+    TimeOppException,
     DatetimeSmallException
 )
 
@@ -32,6 +37,7 @@ class Regex:
     money = r"^-?[0-9]{1,}\.[0-9]{2}$"
     percent = r"^-?[0-9]{1}\.[0-9]{1,5}$"
     odd = r"^[1-9]{1,}\.[0-9]{1,3}$"
+    time_opp = r"^-?[0-9]{1,}\.?[0-9]{1,5}$"
 
 
 def create_login_checker(login: Login) -> None:
@@ -86,6 +92,32 @@ def multi_bet_checker(multi_bet: MultiBet) -> None:
     )
 
 
+def single_bet_patch_checker(single_bet: BetPatchBody) -> None:
+    percent_checker(single_bet.operator_fee, "operator_fee")
+    money_checker(single_bet.total_amount, "total_amount")
+    money_checker(single_bet.profit, "profit")
+    datetime_none_checker(single_bet.finish_datetime, "finish_datetime")
+
+
+def multi_bet_patch_checker(multi_bet: BetPatchBody) -> None:
+    percent_checker(multi_bet.operator_fee, "operator_fee")
+    money_checker(multi_bet.total_amount, "total_amount")
+    money_checker(multi_bet.profit, "profit")
+    datetime_none_checker(multi_bet.finish_datetime, "finish_datetime")
+
+
+def compound_interest_checker(compound_interest: CompoundInterest) -> None:
+    money_checker(compound_interest.capital, "capital")
+    percent_checker(compound_interest.interest_rate, "interest_rate")
+    money_checker(compound_interest.amount, "amount")
+    time_opp_checker(compound_interest.time_opp)
+
+
+def time_opp_checker(time_opp: Decimal) -> None:
+    if time_opp is not None and not match(Regex.time_opp, str(time_opp)):
+        raise TimeOppException()
+
+
 def team_checker(team: str, what_team: str) -> None:
     if team is not None and not match(Regex.team_bet, team):
         raise TeamBetException(what_team)
@@ -124,6 +156,11 @@ def percent_checker(percent: Decimal, what_percent: str) -> None:
 def odd_checker(odd: Decimal) -> None:
     if not match(Regex.odd, str(odd)):
         raise OddException()
+
+
+def datetime_none_checker(datetime_test: datetime.datetime, what_dtt: str) -> None:
+    if datetime_test is None:
+        raise DatetimeNoneException(what_dtt)
 
 
 def datetime_small_than(
