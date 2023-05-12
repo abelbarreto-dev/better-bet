@@ -1,5 +1,7 @@
 from typing import Any, Dict
 
+from decimal import Decimal
+
 from json import loads
 
 from fastapi import Request
@@ -9,6 +11,7 @@ from src.api.models.api_models import (
     LoginAuth,
     SingleBet,
     MultiBet,
+    CompoundInterest
 )
 
 from src.api.models.request_body import BetPatchBody
@@ -23,7 +26,8 @@ from src.utils.checker import (
     single_bet_checker,
     multi_bet_checker,
     single_bet_patch_checker,
-    multi_bet_patch_checker
+    multi_bet_patch_checker,
+    compound_interest_checker
 )
 
 
@@ -88,3 +92,20 @@ class Controller:
             multi_bet_patch_checker(bet_patch_body)
         except ValueError as ve:
             raise BadRequest(ve.args[0])
+
+    @classmethod
+    async def post_compound_interest(cls, compound_interest: CompoundInterest) -> Any:
+        try:
+            compound_interest_checker(compound_interest)
+        except ValueError as ve:
+            raise BadRequest(ve.args[0])
+
+        interests = Decimal(
+            Decimal("1.00") + compound_interest.interest_rate
+        )
+
+        interests = interests ** compound_interest.time_opp
+
+        compound_interest.amount = compound_interest.capital * interests
+
+        return compound_interest

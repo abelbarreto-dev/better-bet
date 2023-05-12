@@ -51,6 +51,11 @@ class DatetimeNoneException(ValueError):
         super().__init__(f"error: {what_dtt} can't be null")
 
 
+class TimeOppException(ValueError):
+    def __init__(self):
+        super().__init__("error: time_opp is an invalid pattern")
+
+
 class BadRequest(HTTPException):
     def __init__(self, message: str):
         super().__init__(

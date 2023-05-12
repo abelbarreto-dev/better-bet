@@ -21,12 +21,12 @@ ROUTER = APIRouter()
 
 @ROUTER.post(ROUTES["post_login"])
 async def post_login(login: Login) -> Any:
-    return await Controller.post_login(login=login)
+    return await Controller.post_login(login)
 
 
 @ROUTER.post(ROUTES["post_login_auth"])
 async def post_login_auth(login_auth: LoginAuth) -> Any:
-    return await Controller.post_login_auth(login_auth=login_auth)
+    return await Controller.post_login_auth(login_auth)
 
 
 @ROUTER.post(ROUTES["post_single_bet"])
@@ -96,4 +96,4 @@ async def get_odds_success(odds_success: Request) -> Any:
 
 @ROUTER.post(ROUTES["post_compound_interest"])
 async def post_compound_interest(compound_interest: CompoundInterest) -> Any:
-    return compound_interest
+    return await Controller.post_compound_interest(compound_interest)
