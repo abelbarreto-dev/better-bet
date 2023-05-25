@@ -80,13 +80,13 @@ async def get_lost_multi(lost_multi: Request) -> Any:
 
 
 @ROUTER.get(ROUTES["get_all_profits"])
-async def get_all_profits(all_profits: Request) -> Any:
-    return all_profits
+async def get_all_profits() -> Any:
+    return await Controller.get_all_profits()
 
 
 @ROUTER.get(ROUTES["get_all_lost"])
-async def get_all_lost(all_lost: Request) -> Any:
-    return all_lost
+async def get_all_lost() -> Any:
+    return await Controller.get_all_lost()
 
 
 @ROUTER.post(ROUTES["post_compound_interest"])

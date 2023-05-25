@@ -155,6 +155,14 @@ class Controller:
             raise BadRequest(ve.args[0])
 
     @classmethod
+    async def get_all_profits(cls) -> Any:
+        return None
+
+    @classmethod
+    async def get_all_lost(cls) -> Any:
+        return None
+
+    @classmethod
     async def get_lost_multi(cls, lost_multi: Request) -> Any:
         new_date = await cls._get_data_from_request(lost_multi)
 
