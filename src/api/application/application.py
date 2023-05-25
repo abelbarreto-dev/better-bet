@@ -36,6 +36,8 @@ from src.utils.checker import (
     date_filter_checker,
 )
 
+from src.api.repository.login_repository import LoginRepository
+
 
 class Controller:
 
@@ -56,12 +58,16 @@ class Controller:
         except ValueError as ve:
             raise BadRequest(ve.args[0])
 
+        return await LoginRepository.create_login(login)
+
     @classmethod
     async def post_login_auth(cls, login_auth: LoginAuth) -> Any:
         try:
             login_auth_checker(login_auth)
         except ValueError as ve:
             raise BadRequest(ve.args[0])
+
+        return await LoginRepository.get_login(login_auth)
 
     @classmethod
     async def post_single_bet(cls, single_bet: SingleBet) -> Any:

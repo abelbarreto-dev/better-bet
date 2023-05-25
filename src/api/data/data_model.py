@@ -11,17 +11,19 @@ from peewee import (
 from src.utils.connection import Database
 
 
-class Login(Model):
+class BaseModel(Model):
+    class Meta:
+        database = Database.connect()
+
+
+class Login(BaseModel):
     id = AutoField(null=False, primary_key=True)
     player_name = CharField(max_length=128, null=False)
-    username = CharField(max_length=128, null=False)
+    username = CharField(max_length=128, unique=True, null=False)
     password = CharField(max_length=512, null=False)
 
-    class Meta:
-        database = Database.connect
 
-
-class SingleBet(Model):
+class SingleBet(BaseModel):
     id = AutoField(null=False, primary_key=True)
     id_login = ForeignKeyField(Login, Login.id, null=False)
     home_team = CharField(max_length=128, null=False)
@@ -38,11 +40,8 @@ class SingleBet(Model):
     finish_datetime = DateTimeField(null=True)
     operator_fee = DecimalField(decimal_places=2, null=True)
 
-    class Meta:
-        database = Database.connect
 
-
-class MultiBet(Model):
+class MultiBet(BaseModel):
     id = AutoField(null=False, primary_key=True)
     id_login = ForeignKeyField(Login, Login.id, null=False)
     home_team = CharField(max_length=128, null=False)
@@ -58,6 +57,3 @@ class MultiBet(Model):
     create_datetime = DateTimeField(null=False)
     finish_datetime = DateTimeField(null=True)
     operator_fee = DecimalField(decimal_places=2, null=True)
-
-    class Meta:
-        database = Database.connect
