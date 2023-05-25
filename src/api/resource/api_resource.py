@@ -61,22 +61,22 @@ async def get_filter_multi(date_filter: Request) -> Any:
 
 @ROUTER.get(ROUTES["get_profits_single"])
 async def get_profits_single(profits_single: Request) -> Any:
-    return Controller.get_profits_single(profits_single)
+    return await Controller.get_profits_single(profits_single)
 
 
 @ROUTER.get(ROUTES["get_profits_multi"])
 async def get_profits_multi(profits_multi: Request) -> Any:
-    return Controller.get_profits_multi(profits_multi)
+    return await Controller.get_profits_multi(profits_multi)
 
 
 @ROUTER.get(ROUTES["get_lost_single"])
 async def get_lost_single(lost_single: Request) -> Any:
-    return lost_single
+    return await Controller.get_lost_single(lost_single)
 
 
 @ROUTER.get(ROUTES["get_lost_multi"])
 async def get_lost_multi(lost_multi: Request) -> Any:
-    return lost_multi
+    return await Controller.get_lost_multi(lost_multi)
 
 
 @ROUTER.get(ROUTES["get_all_profits"])
