@@ -38,6 +38,7 @@ from src.utils.checker import (
 
 from src.api.repository.login_repository import LoginRepository
 from src.api.repository.single_bet_repository import SingleBetRepository
+from src.api.repository.multi_bet_repository import MultiBetRepository
 
 
 class Controller:
@@ -85,6 +86,8 @@ class Controller:
             multi_bet_checker(multi_bet)
         except ValueError as ve:
             raise BadRequest(ve.args[0])
+
+        return await MultiBetRepository.create_multi_bet(multi_bet)
 
     @classmethod
     async def patch_single_bet(cls, single_bet: Request) -> Any:
