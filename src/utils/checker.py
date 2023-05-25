@@ -14,6 +14,7 @@ from src.api.models.api_models import (
 from src.api.models.request_body import (
     BetPatchBody,
     DateFromToBody,
+    DateFilterBody,
 )
 
 from src.utils.exceptions import (
@@ -126,6 +127,14 @@ def date_from_to_checker(date_from_to: DateFromToBody, is_multi: bool) -> None:
 
     if date_from_to.date_from > date_from_to.date_to:
         raise DateFromGreaterException(what_bet)
+
+
+def date_filter_checker(date_filter: DateFilterBody, is_multi: bool) -> None:
+    if date_filter.date_from is not None:
+        what_bet = "multi bet" if is_multi else "single bet"
+
+        if date_filter.date_to is not None and date_filter.date_from > date_filter.date_to:
+            raise DateFromGreaterException(what_bet)
 
 
 def time_opp_checker(time_opp: Decimal) -> None:

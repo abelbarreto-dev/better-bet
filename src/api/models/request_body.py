@@ -19,5 +19,12 @@ class BetPatchBody(BaseModel):
 
 
 class DateFromToBody(BaseModel):
+    login_id: int
     date_from: date
+    date_to: Optional[date] = None
+
+
+class DateFilterBody(BaseModel):
+    login_id: int
+    date_from: Optional[date] = None
     date_to: Optional[date] = None
