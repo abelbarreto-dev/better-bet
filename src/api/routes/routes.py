@@ -13,6 +13,5 @@ ROUTES = {
     "get_lost_multi": "/bet/multi/lost",
     "get_all_profits": "/bet/profits/all",
     "get_all_lost": "/bet/lost/all",
-    "get_odds_success": "/bet/odds-success/{date_opp}",
     "post_compound_interest": "/compound-interest"
 }
