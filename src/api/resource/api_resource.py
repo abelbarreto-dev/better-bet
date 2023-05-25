@@ -50,12 +50,12 @@ async def patch_multi_bet(multi_bet: Request) -> Any:
 
 
 @ROUTER.get(ROUTES["get_filter_single"])
-async def get_filter_single(date_from: datetime, date_to: datetime) -> Any:
+async def get_filter_single(date_filer: Request) -> Any:
     return None
 
 
 @ROUTER.get(ROUTES["get_filter_multi"])
-async def get_filter_multi(date_from: datetime, date_to: datetime) -> Any:
+async def get_filter_multi(date_filer: Request) -> Any:
     return None
 
 

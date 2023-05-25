@@ -4,7 +4,7 @@ from typing import Optional
 
 from decimal import Decimal
 
-from datetime import datetime
+from datetime import datetime, date
 
 from src.utils.bet_status import BetStatus
 
@@ -16,3 +16,8 @@ class BetPatchBody(BaseModel):
     operator_fee: Decimal
     total_amount: Decimal
     profit: Decimal
+
+
+class DateFromToBody(BaseModel):
+    date_from: date
+    date_to: Optional[date] = None
