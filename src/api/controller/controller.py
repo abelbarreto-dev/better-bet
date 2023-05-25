@@ -1,191 +1,92 @@
-from typing import Any, Dict
+from fastapi import APIRouter, Request
+from typing import Any
 
-from decimal import Decimal
+from src.api.routes.routes import ROUTES
 
-from json import loads
-
-from fastapi import Request
+from src.api.application.application import Controller
 
 from src.api.models.api_models import (
     Login,
     LoginAuth,
     SingleBet,
     MultiBet,
-    CompoundInterest
-)
-
-from src.api.models.request_body import (
-    BetPatchBody,
-    DateFromToBody,
-    DateFilterBody,
-)
-
-from src.utils.exceptions import (
-    BadRequest
-)
-
-from src.utils.checker import (
-    create_login_checker,
-    login_auth_checker,
-    single_bet_checker,
-    multi_bet_checker,
-    single_bet_patch_checker,
-    multi_bet_patch_checker,
-    compound_interest_checker,
-    date_from_to_checker,
-    date_filter_checker,
+    CompoundInterest,
 )
 
 
-class Controller:
+ROUTER = APIRouter()
 
-    @classmethod
-    async def _get_data_from_request(cls, request: Request) -> Dict[str, Any]:
-        data_json = await request.body()
 
-        data_json = data_json.decode("utf-8")
+@ROUTER.post(ROUTES["post_login"])
+async def post_login(login: Login) -> Any:
+    return await Controller.post_login(login)
 
-        data_dict = loads(data_json)
 
-        return data_dict
+@ROUTER.post(ROUTES["post_login_auth"])
+async def post_login_auth(login_auth: LoginAuth) -> Any:
+    return await Controller.post_login_auth(login_auth)
 
-    @classmethod
-    async def post_login(cls, login: Login) -> Any:
-        try:
-            create_login_checker(login)
-        except ValueError as ve:
-            raise BadRequest(ve.args[0])
 
-    @classmethod
-    async def post_login_auth(cls, login_auth: LoginAuth) -> Any:
-        try:
-            login_auth_checker(login_auth)
-        except ValueError as ve:
-            raise BadRequest(ve.args[0])
+@ROUTER.post(ROUTES["post_single_bet"])
+async def post_single_bet(single_bet: SingleBet) -> Any:
+    return await Controller.post_single_bet(single_bet)
 
-    @classmethod
-    async def post_single_bet(cls, single_bet: SingleBet) -> Any:
-        try:
-            single_bet_checker(single_bet)
-        except ValueError as ve:
-            raise BadRequest(ve.args[0])
 
-    @classmethod
-    async def post_multi_bet(cls, multi_bet: MultiBet) -> Any:
-        try:
-            multi_bet_checker(multi_bet)
-        except ValueError as ve:
-            raise BadRequest(ve.args[0])
+@ROUTER.post(ROUTES["post_multi_bet"])
+async def post_multi_bet(multi_bet: MultiBet) -> Any:
+    return await Controller.post_multi_bet(multi_bet)
 
-    @classmethod
-    async def patch_single_bet(cls, single_bet: Request) -> Any:
-        data_single_bet = await cls._get_data_from_request(single_bet)
 
-        bet_patch_body = BetPatchBody.parse_obj(data_single_bet)
+@ROUTER.patch(ROUTES["patch_single_bet"])
+async def patch_single_bet(single_bet: Request) -> Any:
+    return await Controller.patch_single_bet(single_bet)
 
-        try:
-            single_bet_patch_checker(bet_patch_body)
-        except ValueError as ve:
-            raise BadRequest(ve.args[0])
 
-    @classmethod
-    async def patch_multi_bet(cls, multi_bet: Request) -> Any:
-        data_multi_bet = await cls._get_data_from_request(multi_bet)
+@ROUTER.patch(ROUTES["patch_multi_bet"])
+async def patch_multi_bet(multi_bet: Request) -> Any:
+    return await Controller.patch_multi_bet(multi_bet)
 
-        bet_patch_body = BetPatchBody.parse_obj(data_multi_bet)
 
-        try:
-            multi_bet_patch_checker(bet_patch_body)
-        except ValueError as ve:
-            raise BadRequest(ve.args[0])
+@ROUTER.get(ROUTES["get_filter_single"])
+async def get_filter_single(date_filter: Request) -> Any:
+    return await Controller.get_filter_single(date_filter)
 
-    @classmethod
-    async def get_filter_single(cls, date_filter: Request) -> Any:
-        new_date = await cls._get_data_from_request(date_filter)
 
-        date_to_filter = DateFromToBody.parse_obj(new_date)
+@ROUTER.get(ROUTES["get_filter_multi"])
+async def get_filter_multi(date_filter: Request) -> Any:
+    return await Controller.get_filter_multi(date_filter)
 
-        try:
-            date_from_to_checker(date_to_filter, is_multi=False)
-        except ValueError as ve:
-            raise BadRequest(ve.args[0])
 
-    @classmethod
-    async def get_filter_multi(cls, date_filter: Request) -> Any:
-        new_date = await cls._get_data_from_request(date_filter)
+@ROUTER.get(ROUTES["get_profits_single"])
+async def get_profits_single(profits_single: Request) -> Any:
+    return await Controller.get_profits_single(profits_single)
 
-        date_to_filter = DateFromToBody.parse_obj(new_date)
 
-        try:
-            date_from_to_checker(date_to_filter, is_multi=True)
-        except ValueError as ve:
-            raise BadRequest(ve.args[0])
+@ROUTER.get(ROUTES["get_profits_multi"])
+async def get_profits_multi(profits_multi: Request) -> Any:
+    return await Controller.get_profits_multi(profits_multi)
 
-    @classmethod
-    async def get_profits_single(cls, profits_single: Request) -> Any:
-        new_date = await cls._get_data_from_request(profits_single)
 
-        date_to_filter = DateFilterBody.parse_obj(new_date)
+@ROUTER.get(ROUTES["get_lost_single"])
+async def get_lost_single(lost_single: Request) -> Any:
+    return await Controller.get_lost_single(lost_single)
 
-        try:
-            date_filter_checker(date_to_filter, is_multi=False)
-        except ValueError as ve:
-            raise BadRequest(ve.args[0])
 
-    @classmethod
-    async def get_profits_multi(cls, profits_multi: Request) -> Any:
-        new_date = await cls._get_data_from_request(profits_multi)
+@ROUTER.get(ROUTES["get_lost_multi"])
+async def get_lost_multi(lost_multi: Request) -> Any:
+    return await Controller.get_lost_multi(lost_multi)
 
-        date_to_filter = DateFilterBody.parse_obj(new_date)
 
-        try:
-            date_filter_checker(date_to_filter, is_multi=True)
-        except ValueError as ve:
-            raise BadRequest(ve.args[0])
+@ROUTER.get(ROUTES["get_all_profits"])
+async def get_all_profits() -> Any:
+    return await Controller.get_all_profits()
 
-    @classmethod
-    async def get_lost_single(cls, lost_single: Request) -> Any:
-        new_date = await cls._get_data_from_request(lost_single)
 
-        date_to_filter = DateFilterBody.parse_obj(new_date)
+@ROUTER.get(ROUTES["get_all_lost"])
+async def get_all_lost() -> Any:
+    return await Controller.get_all_lost()
 
-        try:
-            date_filter_checker(date_to_filter, is_multi=False)
-        except ValueError as ve:
-            raise BadRequest(ve.args[0])
 
-    @classmethod
-    async def get_lost_multi(cls, lost_multi: Request) -> Any:
-        new_date = await cls._get_data_from_request(lost_multi)
-
-        date_to_filter = DateFilterBody.parse_obj(new_date)
-
-        try:
-            date_filter_checker(date_to_filter, is_multi=True)
-        except ValueError as ve:
-            raise BadRequest(ve.args[0])
-
-    @classmethod
-    async def get_all_profits(cls) -> Any:
-        return None
-
-    @classmethod
-    async def get_all_lost(cls) -> Any:
-        return None
-
-    @classmethod
-    async def post_compound_interest(cls, compound_interest: CompoundInterest) -> Any:
-        try:
-            compound_interest_checker(compound_interest)
-        except ValueError as ve:
-            raise BadRequest(ve.args[0])
-
-        interests = Decimal(
-            Decimal("1.00") + compound_interest.interest_rate
-        )
-
-        interests = interests ** compound_interest.time_opp
-
-        compound_interest.amount = compound_interest.capital * interests
-
-        return compound_interest
+@ROUTER.post(ROUTES["post_compound_interest"])
+async def post_compound_interest(compound_interest: CompoundInterest) -> Any:
+    return await Controller.post_compound_interest(compound_interest)
