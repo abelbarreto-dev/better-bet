@@ -100,6 +100,8 @@ class Controller:
         except ValueError as ve:
             raise BadRequest(ve.args[0])
 
+        return await SingleBetRepository.patch_single_bet(bet_patch_body)
+
     @classmethod
     async def patch_multi_bet(cls, multi_bet: Request) -> Any:
         data_multi_bet = await cls._get_data_from_request(multi_bet)
