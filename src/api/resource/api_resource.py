@@ -89,11 +89,6 @@ async def get_all_lost(all_lost: Request) -> Any:
     return all_lost
 
 
-@ROUTER.get(ROUTES["get_odds_success"])
-async def get_odds_success(odds_success: Request) -> Any:
-    return odds_success
-
-
 @ROUTER.post(ROUTES["post_compound_interest"])
 async def post_compound_interest(compound_interest: CompoundInterest) -> Any:
     return await Controller.post_compound_interest(compound_interest)
