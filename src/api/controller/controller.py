@@ -14,7 +14,10 @@ from src.api.models.api_models import (
     CompoundInterest
 )
 
-from src.api.models.request_body import BetPatchBody
+from src.api.models.request_body import (
+    BetPatchBody,
+    DateFromToBody,
+)
 
 from src.utils.exceptions import (
     BadRequest
@@ -27,7 +30,8 @@ from src.utils.checker import (
     multi_bet_checker,
     single_bet_patch_checker,
     multi_bet_patch_checker,
-    compound_interest_checker
+    compound_interest_checker,
+    date_from_to_checker,
 )
 
 
@@ -90,6 +94,28 @@ class Controller:
 
         try:
             multi_bet_patch_checker(bet_patch_body)
+        except ValueError as ve:
+            raise BadRequest(ve.args[0])
+
+    @classmethod
+    async def get_filter_single(cls, date_filter: Request) -> Any:
+        new_date = await cls._get_data_from_request(date_filter)
+
+        date_to_filter = DateFromToBody.parse_obj(new_date)
+
+        try:
+            date_from_to_checker(date_to_filter, is_multi=False)
+        except ValueError as ve:
+            raise BadRequest(ve.args[0])
+
+    @classmethod
+    async def get_filter_multi(cls, date_filter: Request) -> Any:
+        new_date = await cls._get_data_from_request(date_filter)
+
+        date_to_filter = DateFromToBody.parse_obj(new_date)
+
+        try:
+            date_from_to_checker(date_to_filter, is_multi=True)
         except ValueError as ve:
             raise BadRequest(ve.args[0])
 

@@ -11,7 +11,10 @@ from src.api.models.api_models import (
     CompoundInterest
 )
 
-from src.api.models.request_body import BetPatchBody
+from src.api.models.request_body import (
+    BetPatchBody,
+    DateFromToBody,
+)
 
 from src.utils.exceptions import (
     PlayerNameException,
@@ -24,7 +27,9 @@ from src.utils.exceptions import (
     TeamBetException,
     DatetimeNoneException,
     TimeOppException,
-    DatetimeSmallException
+    DatetimeSmallException,
+    DateToNoneException,
+    DateFromGreaterException,
 )
 
 
@@ -111,6 +116,16 @@ def compound_interest_checker(compound_interest: CompoundInterest) -> None:
     percent_checker(compound_interest.interest_rate, "interest_rate")
     money_checker(compound_interest.amount, "amount")
     time_opp_checker(compound_interest.time_opp)
+
+
+def date_from_to_checker(date_from_to: DateFromToBody, is_multi: bool) -> None:
+    what_bet = "multi bet" if is_multi else "single bet"
+
+    if date_from_to.date_to is None:
+        raise DateToNoneException(what_bet)
+
+    if date_from_to.date_from > date_from_to.date_to:
+        raise DateFromGreaterException(what_bet)
 
 
 def time_opp_checker(time_opp: Decimal) -> None:

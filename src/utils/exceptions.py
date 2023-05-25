@@ -56,6 +56,16 @@ class TimeOppException(ValueError):
         super().__init__("error: time_opp is an invalid pattern")
 
 
+class DateToNoneException(ValueError):
+    def __init__(self, what_bet: str):
+        super().__init__(f"error: date_to can not be null at {what_bet}")
+
+
+class DateFromGreaterException(ValueError):
+    def __init__(self, what_bet: str):
+        super().__init__(f"error: date_from can not be greater than date_to at {what_bet}")
+
+
 class BadRequest(HTTPException):
     def __init__(self, message: str):
         super().__init__(
