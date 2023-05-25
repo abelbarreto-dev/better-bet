@@ -17,6 +17,7 @@ from src.api.models.api_models import (
 from src.api.models.request_body import (
     BetPatchBody,
     DateFromToBody,
+    DateFilterBody,
 )
 
 from src.utils.exceptions import (
@@ -32,6 +33,7 @@ from src.utils.checker import (
     multi_bet_patch_checker,
     compound_interest_checker,
     date_from_to_checker,
+    date_filter_checker,
 )
 
 
@@ -116,6 +118,28 @@ class Controller:
 
         try:
             date_from_to_checker(date_to_filter, is_multi=True)
+        except ValueError as ve:
+            raise BadRequest(ve.args[0])
+
+    @classmethod
+    async def get_profits_single(cls, profits_single: Request) -> Any:
+        new_date = await cls._get_data_from_request(profits_single)
+
+        date_to_filter = DateFilterBody.parse_obj(new_date)
+
+        try:
+            date_filter_checker(date_to_filter, is_multi=False)
+        except ValueError as ve:
+            raise BadRequest(ve.args[0])
+
+    @classmethod
+    async def get_profits_multi(cls, profits_multi: Request) -> Any:
+        new_date = await cls._get_data_from_request(profits_multi)
+
+        date_to_filter = DateFilterBody.parse_obj(new_date)
+
+        try:
+            date_filter_checker(date_to_filter, is_multi=True)
         except ValueError as ve:
             raise BadRequest(ve.args[0])
 
