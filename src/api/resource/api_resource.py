@@ -1,8 +1,6 @@
 from fastapi import APIRouter, Request
 from typing import Any
 
-from datetime import datetime
-
 from src.api.routes.routes import ROUTES
 
 from src.api.controller.controller import Controller
@@ -61,32 +59,32 @@ async def get_filter_multi(date_filter: Request) -> Any:
 
 @ROUTER.get(ROUTES["get_profits_single"])
 async def get_profits_single(profits_single: Request) -> Any:
-    return Controller.get_profits_single(profits_single)
+    return await Controller.get_profits_single(profits_single)
 
 
 @ROUTER.get(ROUTES["get_profits_multi"])
 async def get_profits_multi(profits_multi: Request) -> Any:
-    return Controller.get_profits_multi(profits_multi)
+    return await Controller.get_profits_multi(profits_multi)
 
 
 @ROUTER.get(ROUTES["get_lost_single"])
 async def get_lost_single(lost_single: Request) -> Any:
-    return lost_single
+    return await Controller.get_lost_single(lost_single)
 
 
 @ROUTER.get(ROUTES["get_lost_multi"])
 async def get_lost_multi(lost_multi: Request) -> Any:
-    return lost_multi
+    return await Controller.get_lost_multi(lost_multi)
 
 
 @ROUTER.get(ROUTES["get_all_profits"])
-async def get_all_profits(all_profits: Request) -> Any:
-    return all_profits
+async def get_all_profits() -> Any:
+    return await Controller.get_all_profits()
 
 
 @ROUTER.get(ROUTES["get_all_lost"])
-async def get_all_lost(all_lost: Request) -> Any:
-    return all_lost
+async def get_all_lost() -> Any:
+    return await Controller.get_all_lost()
 
 
 @ROUTER.post(ROUTES["post_compound_interest"])
