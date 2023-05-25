@@ -1,8 +1,6 @@
 from fastapi import APIRouter, Request
 from typing import Any
 
-from datetime import datetime
-
 from src.api.routes.routes import ROUTES
 
 from src.api.controller.controller import Controller
