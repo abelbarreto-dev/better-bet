@@ -98,8 +98,8 @@ class Controller:
             raise BadRequest(ve.args[0])
 
     @classmethod
-    async def get_filter_single(cls, date_filer: Request) -> Any:
-        new_date = await cls._get_data_from_request(date_filer)
+    async def get_filter_single(cls, date_filter: Request) -> Any:
+        new_date = await cls._get_data_from_request(date_filter)
 
         date_to_filter = DateFromToBody.parse_obj(new_date)
 
@@ -109,8 +109,8 @@ class Controller:
             raise BadRequest(ve.args[0])
 
     @classmethod
-    async def get_filter_multi(cls, date_filer: Request) -> Any:
-        new_date = await cls._get_data_from_request(date_filer)
+    async def get_filter_multi(cls, date_filter: Request) -> Any:
+        new_date = await cls._get_data_from_request(date_filter)
 
         date_to_filter = DateFromToBody.parse_obj(new_date)
 
