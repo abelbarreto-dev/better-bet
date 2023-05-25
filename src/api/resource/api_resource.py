@@ -3,7 +3,7 @@ from typing import Any
 
 from src.api.routes.routes import ROUTES
 
-from src.api.controller.controller import Controller
+from src.api.application.application import Controller
 
 from src.api.models.api_models import (
     Login,
