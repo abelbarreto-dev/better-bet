@@ -10,7 +10,7 @@ from src.api.models.api_models import (
     LoginAuth,
     SingleBet,
     MultiBet,
-    CompoundInterest
+    CompoundInterest,
 )
 
 

@@ -2,7 +2,7 @@ from fastapi import FastAPI
 
 import uvicorn
 
-from src.api.resource.api_resource import ROUTER
+from src.api.controller.controller import ROUTER
 
 
 better_bet_api = FastAPI()
