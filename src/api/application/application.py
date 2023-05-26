@@ -113,6 +113,8 @@ class Controller:
         except ValueError as ve:
             raise BadRequest(ve.args[0])
 
+        return await MultiBetRepository.patch_multi_bet(bet_patch_body)
+
     @classmethod
     async def get_filter_single(cls, date_filter: Request) -> Any:
         new_date = await cls._get_data_from_request(date_filter)
