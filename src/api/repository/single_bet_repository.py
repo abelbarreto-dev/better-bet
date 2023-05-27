@@ -21,6 +21,26 @@ class SingleBetRepository:
         create_single_bet()
 
     @classmethod
+    async def _get_single_bet(cls, single_bet: SingleBetDb) -> SingleBet:
+        return SingleBet(
+            id=single_bet.id,
+            id_login=single_bet.id_login,
+            home_team=single_bet.home_team,
+            away_team=single_bet.away_team,
+            team_bet=single_bet.team_bet,
+            odd=single_bet.odd,
+            value_invest=single_bet.value_invest,
+            profit=single_bet.profit,
+            potential_earnings=single_bet.potential_earnings,
+            total_amount=single_bet.total_amount,
+            bet_status=single_bet.bet_status,
+            description=single_bet.description,
+            create_datetime=single_bet.create_datetime,
+            finish_datetime=single_bet.finish_datetime,
+            operator_fee=single_bet.operator_fee,
+        )
+
+    @classmethod
     async def create_single_bet(cls, single_bet: SingleBet) -> Response:
         await cls._single_bet_table()
 
@@ -75,23 +95,7 @@ class SingleBetRepository:
         return JSONResponse(
             content=dict(
                 single_bet_profits=[
-                    SingleBet(
-                        id=single_bet.id,
-                        id_login=single_bet.id_login,
-                        home_team=single_bet.home_team,
-                        away_team=single_bet.away_team,
-                        team_bet=single_bet.team_bet,
-                        odd=single_bet.odd,
-                        value_invest=single_bet.value_invest,
-                        profit=single_bet.profit,
-                        potential_earnings=single_bet.potential_earnings,
-                        total_amount=single_bet.total_amount,
-                        bet_status=single_bet.bet_status,
-                        description=single_bet.description,
-                        create_datetime=single_bet.create_datetime,
-                        finish_datetime=single_bet.finish_datetime,
-                        operator_fee=single_bet.operator_fee,
-                    )
+                    cls._get_single_bet(single_bet)
                     for single_bet in bets_single
                 ]
             )
@@ -114,23 +118,7 @@ class SingleBetRepository:
         return JSONResponse(
             content=dict(
                 single_bet_lost=[
-                    SingleBet(
-                        id=single_bet.id,
-                        id_login=single_bet.id_login,
-                        home_team=single_bet.home_team,
-                        away_team=single_bet.away_team,
-                        team_bet=single_bet.team_bet,
-                        odd=single_bet.odd,
-                        value_invest=single_bet.value_invest,
-                        profit=single_bet.profit,
-                        potential_earnings=single_bet.potential_earnings,
-                        total_amount=single_bet.total_amount,
-                        bet_status=single_bet.bet_status,
-                        description=single_bet.description,
-                        create_datetime=single_bet.create_datetime,
-                        finish_datetime=single_bet.finish_datetime,
-                        operator_fee=single_bet.operator_fee,
-                    )
+                    cls._get_single_bet(single_bet)
                     for single_bet in bets_single
                 ]
             )
@@ -152,23 +140,7 @@ class SingleBetRepository:
         return JSONResponse(
             content=dict(
                 single_bet_profits=[
-                    SingleBet(
-                        id=single_bet.id,
-                        id_login=single_bet.id_login,
-                        home_team=single_bet.home_team,
-                        away_team=single_bet.away_team,
-                        team_bet=single_bet.team_bet,
-                        odd=single_bet.odd,
-                        value_invest=single_bet.value_invest,
-                        profit=single_bet.profit,
-                        potential_earnings=single_bet.potential_earnings,
-                        total_amount=single_bet.total_amount,
-                        bet_status=single_bet.bet_status,
-                        description=single_bet.description,
-                        create_datetime=single_bet.create_datetime,
-                        finish_datetime=single_bet.finish_datetime,
-                        operator_fee=single_bet.operator_fee,
-                    )
+                    cls._get_single_bet(single_bet)
                     for single_bet in bets_single
                 ]
             )
