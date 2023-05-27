@@ -127,6 +127,8 @@ class Controller:
         except ValueError as ve:
             raise BadRequest(ve.args[0])
 
+        return await SingleBetRepository.get_single_bet_filter(date_to_filter)
+
     @classmethod
     async def get_filter_multi(cls, date_filter: Request) -> Any:
         new_date = await cls._get_data_from_request(date_filter)
@@ -137,6 +139,8 @@ class Controller:
             date_from_to_checker(date_to_filter, is_multi=True)
         except ValueError as ve:
             raise BadRequest(ve.args[0])
+
+        return await MultiBetRepository.get_multi_bet_filter(date_to_filter)
 
     @classmethod
     async def get_profits_single(cls, profits_single: Request) -> Any:
