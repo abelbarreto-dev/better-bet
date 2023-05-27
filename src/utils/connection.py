@@ -1,31 +1,44 @@
-from os import environ
+from os import getenv
+
+from pymysql import install_as_MySQLdb
+
+from dotenv import load_dotenv
 
 from peewee import MySQLDatabase
 
 from set_config import get_settings
+
+install_as_MySQLdb()
 
 
 def get_database_name() -> str:
     database = get_settings()
 
     if database["database"] in ("production", "staging"):
-        return environ.get("DATABASE_NAME")
+        return getenv("DATABASE_NAME")
 
     return "db_test"
 
 
 def get_mysql_credentials() -> dict:
+    load_dotenv()
+
     return dict(
-        host=environ.get("DATABASE_HOST"),
-        port=environ.get("DATABASE_PORT"),
+        host=getenv("DATABASE_HOST"),
+        port=int(getenv("DATABASE_PORT")),
         database=get_database_name(),
-        username=environ.get("DATABASE_USER"),
-        passwd=environ.get("DATABASE_PASSWD")
+        user=getenv("DATABASE_USER"),
+        password=getenv("DATABASE_PASSWD")
     )
 
 
 class Database:
-    credentials = get_mysql_credentials()
-    connect = MySQLDatabase(
-        **credentials
-    )
+    _credentials = get_mysql_credentials()
+    _connection = None
+
+    @classmethod
+    def connect(cls) -> MySQLDatabase:
+        if cls._connection is None:
+            cls._connection = MySQLDatabase(**cls._credentials)
+
+        return cls._connection

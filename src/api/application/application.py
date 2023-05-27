@@ -36,6 +36,11 @@ from src.utils.checker import (
     date_filter_checker,
 )
 
+from src.api.repository.login_repository import LoginRepository
+from src.api.repository.single_bet_repository import SingleBetRepository
+from src.api.repository.multi_bet_repository import MultiBetRepository
+from src.api.repository.get_all_repository import GetAllRepository
+
 
 class Controller:
 
@@ -56,12 +61,16 @@ class Controller:
         except ValueError as ve:
             raise BadRequest(ve.args[0])
 
+        return await LoginRepository.create_login(login)
+
     @classmethod
     async def post_login_auth(cls, login_auth: LoginAuth) -> Any:
         try:
             login_auth_checker(login_auth)
         except ValueError as ve:
             raise BadRequest(ve.args[0])
+
+        return await LoginRepository.get_login(login_auth)
 
     @classmethod
     async def post_single_bet(cls, single_bet: SingleBet) -> Any:
@@ -70,12 +79,16 @@ class Controller:
         except ValueError as ve:
             raise BadRequest(ve.args[0])
 
+        return await SingleBetRepository.create_single_bet(single_bet)
+
     @classmethod
     async def post_multi_bet(cls, multi_bet: MultiBet) -> Any:
         try:
             multi_bet_checker(multi_bet)
         except ValueError as ve:
             raise BadRequest(ve.args[0])
+
+        return await MultiBetRepository.create_multi_bet(multi_bet)
 
     @classmethod
     async def patch_single_bet(cls, single_bet: Request) -> Any:
@@ -88,6 +101,8 @@ class Controller:
         except ValueError as ve:
             raise BadRequest(ve.args[0])
 
+        return await SingleBetRepository.patch_single_bet(bet_patch_body)
+
     @classmethod
     async def patch_multi_bet(cls, multi_bet: Request) -> Any:
         data_multi_bet = await cls._get_data_from_request(multi_bet)
@@ -98,6 +113,8 @@ class Controller:
             multi_bet_patch_checker(bet_patch_body)
         except ValueError as ve:
             raise BadRequest(ve.args[0])
+
+        return await MultiBetRepository.patch_multi_bet(bet_patch_body)
 
     @classmethod
     async def get_filter_single(cls, date_filter: Request) -> Any:
@@ -110,6 +127,8 @@ class Controller:
         except ValueError as ve:
             raise BadRequest(ve.args[0])
 
+        return await SingleBetRepository.get_single_bet_filter(date_to_filter)
+
     @classmethod
     async def get_filter_multi(cls, date_filter: Request) -> Any:
         new_date = await cls._get_data_from_request(date_filter)
@@ -120,6 +139,8 @@ class Controller:
             date_from_to_checker(date_to_filter, is_multi=True)
         except ValueError as ve:
             raise BadRequest(ve.args[0])
+
+        return await MultiBetRepository.get_multi_bet_filter(date_to_filter)
 
     @classmethod
     async def get_profits_single(cls, profits_single: Request) -> Any:
@@ -132,6 +153,8 @@ class Controller:
         except ValueError as ve:
             raise BadRequest(ve.args[0])
 
+        return await SingleBetRepository.get_single_bet_profits(date_to_filter)
+
     @classmethod
     async def get_profits_multi(cls, profits_multi: Request) -> Any:
         new_date = await cls._get_data_from_request(profits_multi)
@@ -142,6 +165,8 @@ class Controller:
             date_filter_checker(date_to_filter, is_multi=True)
         except ValueError as ve:
             raise BadRequest(ve.args[0])
+
+        return await MultiBetRepository.get_multi_bet_profits(date_to_filter)
 
     @classmethod
     async def get_lost_single(cls, lost_single: Request) -> Any:
@@ -154,6 +179,8 @@ class Controller:
         except ValueError as ve:
             raise BadRequest(ve.args[0])
 
+        return await SingleBetRepository.get_single_bet_lost(date_to_filter)
+
     @classmethod
     async def get_lost_multi(cls, lost_multi: Request) -> Any:
         new_date = await cls._get_data_from_request(lost_multi)
@@ -165,13 +192,15 @@ class Controller:
         except ValueError as ve:
             raise BadRequest(ve.args[0])
 
-    @classmethod
-    async def get_all_profits(cls) -> Any:
-        return None
+        return await MultiBetRepository.get_multi_bet_lost(date_to_filter)
 
     @classmethod
-    async def get_all_lost(cls) -> Any:
-        return None
+    async def get_all_profits(cls, id_login: int) -> Any:
+        return await GetAllRepository.get_all_profits_id_login(id_login)
+
+    @classmethod
+    async def get_all_lost(cls, id_login: int) -> Any:
+        return await GetAllRepository.get_all_lost_id_login(id_login)
 
     @classmethod
     async def post_compound_interest(cls, compound_interest: CompoundInterest) -> Any:

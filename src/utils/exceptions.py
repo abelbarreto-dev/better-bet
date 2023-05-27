@@ -72,3 +72,19 @@ class BadRequest(HTTPException):
             status_code=400,
             detail={"message": message}
         )
+
+
+class DataNotFound(HTTPException):
+    def __init__(self, message: str):
+        super().__init__(
+            status_code=404,
+            detail={"message": f"error: {message}"}
+        )
+
+
+class UnprocessedEntityException(HTTPException):
+    def __init__(self, entity: str):
+        super().__init__(
+            status_code=422,
+            detail={f"error: {entity} was found invalid to persist"}
+        )
