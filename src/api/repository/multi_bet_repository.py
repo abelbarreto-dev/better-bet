@@ -9,6 +9,7 @@ from src.api.models.request_body import (
 
 from src.api.models.api_models import MultiBet
 from src.api.data.data_model import MultiBet as MultiBetDb
+from src.utils.bet_status import BetStatus
 
 from src.utils.create_tables import create_multi_bet
 from src.utils.exceptions import (
@@ -68,7 +69,8 @@ class MultiBetRepository:
             bets_multi: [MultiBetDb] = MultiBetDb.get(
                 (MultiBetDb.id_login == multi_bet.login_id) &
                 (MultiBetDb.create_datetime == multi_bet.date_from) &
-                (MultiBetDb.finish_datetime == multi_bet.date_to)
+                (MultiBetDb.finish_datetime == multi_bet.date_to) &
+                (MultiBetDb.bet_status == BetStatus.SUCCESS)
             )
         except Exception:
             raise DataNotFound("MultiBet profitable Not Found")
