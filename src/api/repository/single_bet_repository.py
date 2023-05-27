@@ -4,8 +4,12 @@ from fastapi import Response
 
 from starlette.responses import JSONResponse
 
-from src.api.models.request_body import DateFilterBody
-from src.api.models.request_body import BetPatchBody
+from src.api.models.request_body import (
+    DateFromToBody,
+    DateFilterBody,
+    BetPatchBody,
+)
+
 from src.api.models.api_models import SingleBet
 from src.api.data.data_model import SingleBet as SingleBetDb
 from src.utils.bet_status import BetStatus
@@ -127,13 +131,13 @@ class SingleBetRepository:
         )
 
     @classmethod
-    async def get_single_bet_filter(cls, single_bet: DateFilterBody) -> JSONResponse:
+    async def get_single_bet_filter(cls, single_bet: DateFromToBody) -> JSONResponse:
         await cls._single_bet_table()
 
         try:
             bets_single: [SingleBetDb] = SingleBetDb.get(
                 (SingleBetDb.id_login == single_bet.login_id) &
-                (SingleBetDb.create_datetime == single_bet.date_from) &
+                (SingleBetDb.create_datetime == single_bet.date_from) |
                 (SingleBetDb.finish_datetime == single_bet.date_to)
             )
         except Exception:

@@ -7,6 +7,7 @@ from starlette.responses import JSONResponse
 from src.api.models.request_body import (
     BetPatchBody,
     DateFilterBody,
+    DateFromToBody,
 )
 
 from src.api.models.api_models import MultiBet
@@ -130,13 +131,13 @@ class MultiBetRepository:
         )
 
     @classmethod
-    async def get_multi_bet_filter(cls, multi_bet: DateFilterBody) -> JSONResponse:
+    async def get_multi_bet_filter(cls, multi_bet: DateFromToBody) -> JSONResponse:
         await cls._multi_bet_table()
 
         try:
             bets_multi: [MultiBetDb] = MultiBetDb.get(
                 (MultiBetDb.id_login == multi_bet.login_id) &
-                (MultiBetDb.create_datetime == multi_bet.date_from) &
+                (MultiBetDb.create_datetime == multi_bet.date_from) |
                 (MultiBetDb.finish_datetime == multi_bet.date_to)
             )
         except Exception:
