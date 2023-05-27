@@ -96,28 +96,28 @@ class SingleBetRepository:
     async def get_single_bet_profits(cls, single_bet: DateFilterBody) -> JSONResponse:
         await cls._single_bet_table()
 
-        try:
-            bets_single = SingleBetDb.select().where(
+        bets_single = SingleBetDb.select().where(
+            (
+                SingleBetDb.id_login == single_bet.login_id &
+                SingleBetDb.bet_status == BetStatus.SUCCESS.value
+            ) &
+            (
+                (SingleBetDb.create_datetime == single_bet.date_from) |
+                (SingleBetDb.finish_datetime == single_bet.date_to) |
                 (
-                    SingleBetDb.id_login == single_bet.login_id &
-                    SingleBetDb.bet_status == BetStatus.SUCCESS.value
-                ) &
+                    SingleBetDb.create_datetime.is_null(False) &
+                    SingleBetDb.create_datetime.cast("date") == single_bet.date_from
+                ) |
                 (
-                    (SingleBetDb.create_datetime == single_bet.date_from) |
-                    (SingleBetDb.finish_datetime == single_bet.date_to) |
-                    (
-                        SingleBetDb.create_datetime.is_null(False) &
-                        SingleBetDb.create_datetime.cast("date") == single_bet.date_from
-                    ) |
-                    (
-                        SingleBetDb.finish_datetime.is_null(False) &
-                        SingleBetDb.finish_datetime.cast("date") == single_bet.date_to
-                    )
+                    SingleBetDb.finish_datetime.is_null(False) &
+                    SingleBetDb.finish_datetime.cast("date") == single_bet.date_to
                 )
             )
+        )
 
-            bets_list = list(bets_single.dicts())
-        except Exception:
+        bets_list = list(bets_single.dicts())
+
+        if not bets_list:
             raise DataNotFound("SingleBet profitable Not Found")
 
         bets_list = [await cls._get_single_bet(bet) for bet in bets_list]
@@ -132,28 +132,28 @@ class SingleBetRepository:
     async def get_single_bet_lost(cls, single_bet: DateFilterBody) -> JSONResponse:
         await cls._single_bet_table()
 
-        try:
-            bets_single = SingleBetDb.select().where(
+        bets_single = SingleBetDb.select().where(
+            (
+                SingleBetDb.id_login == single_bet.login_id &
+                SingleBetDb.bet_status == BetStatus.FAILURE.value
+            ) &
+            (
+                (SingleBetDb.create_datetime == single_bet.date_from) |
+                (SingleBetDb.finish_datetime == single_bet.date_to) |
                 (
-                    SingleBetDb.id_login == single_bet.login_id &
-                    SingleBetDb.bet_status == BetStatus.FAILURE.value
-                ) &
+                    SingleBetDb.create_datetime.is_null(False) &
+                    SingleBetDb.create_datetime.cast("date") == single_bet.date_from
+                ) |
                 (
-                    (SingleBetDb.create_datetime == single_bet.date_from) |
-                    (SingleBetDb.finish_datetime == single_bet.date_to) |
-                    (
-                        SingleBetDb.create_datetime.is_null(False) &
-                        SingleBetDb.create_datetime.cast("date") == single_bet.date_from
-                    ) |
-                    (
-                        SingleBetDb.finish_datetime.is_null(False) &
-                        SingleBetDb.finish_datetime.cast("date") == single_bet.date_to
-                    )
+                    SingleBetDb.finish_datetime.is_null(False) &
+                    SingleBetDb.finish_datetime.cast("date") == single_bet.date_to
                 )
             )
+        )
 
-            bets_list = list(bets_single.dicts())
-        except Exception:
+        bets_list = list(bets_single.dicts())
+
+        if not bets_list:
             raise DataNotFound("SingleBet lost Not Found")
 
         bets_list = [await cls._get_single_bet(bet) for bet in bets_list]
@@ -168,20 +168,20 @@ class SingleBetRepository:
     async def get_single_bet_filter(cls, single_bet: DateFromToBody) -> JSONResponse:
         await cls._single_bet_table()
 
-        try:
-            bets_single = SingleBetDb.select().where(
-                (SingleBetDb.id_login == single_bet.login_id) &
+        bets_single = SingleBetDb.select().where(
+            (SingleBetDb.id_login == single_bet.login_id) &
+            (
+                (SingleBetDb.create_datetime.cast("date") == single_bet.date_from) |
                 (
-                    (SingleBetDb.create_datetime.cast("date") == single_bet.date_from) |
-                    (
-                        (SingleBetDb.finish_datetime.is_null(False)) &
-                        (SingleBetDb.finish_datetime.cast("date") == single_bet.date_to)
-                    )
+                    (SingleBetDb.finish_datetime.is_null(False)) &
+                    (SingleBetDb.finish_datetime.cast("date") == single_bet.date_to)
                 )
             )
+        )
 
-            bets_list = list(bets_single.dicts())
-        except Exception:
+        bets_list = list(bets_single.dicts())
+
+        if not bets_list:
             raise DataNotFound("SingleBet Not Found")
 
         bets_list = [await cls._get_single_bet(bet) for bet in bets_list]

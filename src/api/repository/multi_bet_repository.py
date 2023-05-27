@@ -99,28 +99,28 @@ class MultiBetRepository:
     async def get_multi_bet_profits(cls, multi_bet: DateFilterBody) -> JSONResponse:
         await cls._multi_bet_table()
 
-        try:
-            bets_multi = MultiBetDb.select().where(
+        bets_multi = MultiBetDb.select().where(
+            (
+                MultiBetDb.id_login == multi_bet.login_id &
+                MultiBetDb.bet_status == BetStatus.SUCCESS.value
+            ) &
+            (
+                (MultiBetDb.create_datetime == multi_bet.date_from) |
+                (MultiBetDb.finish_datetime == multi_bet.date_to) |
                 (
-                    MultiBetDb.id_login == multi_bet.login_id &
-                    MultiBetDb.bet_status == BetStatus.SUCCESS.value
-                ) &
+                    MultiBetDb.create_datetime.is_null(False) &
+                    MultiBetDb.create_datetime.cast("date") == multi_bet.date_from
+                ) |
                 (
-                    (MultiBetDb.create_datetime == multi_bet.date_from) |
-                    (MultiBetDb.finish_datetime == multi_bet.date_to) |
-                    (
-                        MultiBetDb.create_datetime.is_null(False) &
-                        MultiBetDb.create_datetime.cast("date") == multi_bet.date_from
-                    ) |
-                    (
-                        MultiBetDb.finish_datetime.is_null(False) &
-                        MultiBetDb.finish_datetime.cast("date") == multi_bet.date_to
-                    )
+                    MultiBetDb.finish_datetime.is_null(False) &
+                    MultiBetDb.finish_datetime.cast("date") == multi_bet.date_to
                 )
             )
+        )
 
-            bets_list = list(bets_multi.dicts())
-        except Exception:
+        bets_list = list(bets_multi.dicts())
+
+        if not bets_list:
             raise DataNotFound("MultiBet profitable Not Found")
 
         bets_list = [await cls._get_multi_bet(bet) for bet in bets_list]
@@ -135,28 +135,28 @@ class MultiBetRepository:
     async def get_multi_bet_lost(cls, multi_bet: DateFilterBody) -> JSONResponse:
         await cls._multi_bet_table()
 
-        try:
-            bets_multi = MultiBetDb.select().where(
+        bets_multi = MultiBetDb.select().where(
+            (
+                MultiBetDb.id_login == multi_bet.login_id &
+                MultiBetDb.bet_status == BetStatus.SUCCESS.value
+            ) &
+            (
+                (MultiBetDb.create_datetime == multi_bet.date_from) |
+                (MultiBetDb.finish_datetime == multi_bet.date_to) |
                 (
-                    MultiBetDb.id_login == multi_bet.login_id &
-                    MultiBetDb.bet_status == BetStatus.SUCCESS.value
-                ) &
+                    MultiBetDb.create_datetime.is_null(False) &
+                    MultiBetDb.create_datetime.cast("date") == multi_bet.date_from
+                ) |
                 (
-                    (MultiBetDb.create_datetime == multi_bet.date_from) |
-                    (MultiBetDb.finish_datetime == multi_bet.date_to) |
-                    (
-                        MultiBetDb.create_datetime.is_null(False) &
-                        MultiBetDb.create_datetime.cast("date") == multi_bet.date_from
-                    ) |
-                    (
-                        MultiBetDb.finish_datetime.is_null(False) &
-                        MultiBetDb.finish_datetime.cast("date") == multi_bet.date_to
-                    )
+                    MultiBetDb.finish_datetime.is_null(False) &
+                    MultiBetDb.finish_datetime.cast("date") == multi_bet.date_to
                 )
             )
+        )
 
-            bets_list = list(bets_multi.dicts())
-        except Exception:
+        bets_list = list(bets_multi.dicts())
+
+        if not bets_list:
             raise DataNotFound("MultiBet lost Not Found")
 
         bets_list = [await cls._get_multi_bet(bet) for bet in bets_list]
@@ -171,20 +171,20 @@ class MultiBetRepository:
     async def get_multi_bet_filter(cls, multi_bet: DateFromToBody) -> JSONResponse:
         await cls._multi_bet_table()
 
-        try:
-            bets_multi = MultiBetDb.select().where(
-                (MultiBetDb.id_login == multi_bet.login_id) &
+        bets_multi = MultiBetDb.select().where(
+            (MultiBetDb.id_login == multi_bet.login_id) &
+            (
+                (MultiBetDb.create_datetime.cast("date") == multi_bet.date_from) |
                 (
-                    (MultiBetDb.create_datetime.cast("date") == multi_bet.date_from) |
-                    (
-                        (MultiBetDb.finish_datetime.is_null(False)) &
-                        (MultiBetDb.finish_datetime.cast("date") == multi_bet.date_to)
-                    )
+                    (MultiBetDb.finish_datetime.is_null(False)) &
+                    (MultiBetDb.finish_datetime.cast("date") == multi_bet.date_to)
                 )
             )
+        )
 
-            bets_list = list(bets_multi.dicts())
-        except Exception:
+        bets_list = list(bets_multi.dicts())
+
+        if not bets_list:
             raise DataNotFound("MultiBet Not Found")
 
         bets_list = [await cls._get_multi_bet(bet) for bet in bets_list]
