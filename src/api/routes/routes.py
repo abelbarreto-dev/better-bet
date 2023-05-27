@@ -11,7 +11,7 @@ ROUTES = {
     "get_profits_multi": "/bet/multi/profits",
     "get_lost_single": "/bet/single/lost",
     "get_lost_multi": "/bet/multi/lost",
-    "get_all_profits": "/bet/profits/all",
-    "get_all_lost": "/bet/lost/all",
+    "get_all_profits": "/bet/profits/{id_login}/all",
+    "get_all_lost": "/bet/lost/{id_login}/all",
     "post_compound_interest": "/compound-interest"
 }

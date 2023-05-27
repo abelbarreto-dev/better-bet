@@ -182,11 +182,11 @@ class Controller:
             raise BadRequest(ve.args[0])
 
     @classmethod
-    async def get_all_profits(cls) -> Any:
+    async def get_all_profits(cls, id_login: int) -> Any:
         return None
 
     @classmethod
-    async def get_all_lost(cls) -> Any:
+    async def get_all_lost(cls, id_login: int) -> Any:
         return None
 
     @classmethod
