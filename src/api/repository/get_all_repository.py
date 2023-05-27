@@ -17,6 +17,8 @@ from src.utils.create_tables import (
     create_single_bet,
 )
 
+from src.utils.exceptions import DataNotFound
+
 
 class GetAllRepository:
     @classmethod
@@ -87,15 +89,21 @@ class GetAllRepository:
     async def get_all_lost_id_login(cls, id_login: int) -> JSONResponse:
         await cls._create_single_multi_table()
 
-        bets_single: [SingleBetDb] = SingleBetDb.get(
-            (SingleBetDb.id_login == id_login) &
-            (SingleBetDb.bet_status == BetStatus.FAILURE)
-        )
+        try:
+            bets_single: [SingleBetDb] = SingleBetDb.get(
+                (SingleBetDb.id_login == id_login) &
+                (SingleBetDb.bet_status == BetStatus.FAILURE)
+            )
+        except Exception:
+            bets_single = []
 
-        bets_multi: [MultiBetDb] = MultiBetDb.get(
-            (MultiBetDb.id_login == id_login) &
-            (MultiBetDb.bet_status == BetStatus.FAILURE)
-        )
+        try:
+            bets_multi: [MultiBetDb] = MultiBetDb.get(
+                (MultiBetDb.id_login == id_login) &
+                (MultiBetDb.bet_status == BetStatus.FAILURE)
+            )
+        except Exception:
+            bets_multi = []
 
         return JSONResponse(
             content=dict(
