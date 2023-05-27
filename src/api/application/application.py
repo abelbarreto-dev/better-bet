@@ -39,6 +39,7 @@ from src.utils.checker import (
 from src.api.repository.login_repository import LoginRepository
 from src.api.repository.single_bet_repository import SingleBetRepository
 from src.api.repository.multi_bet_repository import MultiBetRepository
+from src.api.repository.get_all_repository import GetAllRepository
 
 
 class Controller:
@@ -183,11 +184,11 @@ class Controller:
 
     @classmethod
     async def get_all_profits(cls, id_login: int) -> Any:
-        return None
+        return await GetAllRepository.get_all_profits_id_login(id_login)
 
     @classmethod
     async def get_all_lost(cls, id_login: int) -> Any:
-        return None
+        return await GetAllRepository.get_all_lost_id_login(id_login)
 
     @classmethod
     async def post_compound_interest(cls, compound_interest: CompoundInterest) -> Any:
