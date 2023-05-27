@@ -9,14 +9,14 @@ from src.api.data.data_model import (
     MultiBet as MultiBetDb,
 )
 
-from src.api.models.api_models import (
-    SingleBet,
-    MultiBet
-)
-
 from src.utils.create_tables import (
     create_multi_bet,
     create_single_bet,
+)
+
+from src.utils.types_utils import (
+    get_decimal_str_or_none,
+    get_datetime_str_or_none,
 )
 
 
@@ -28,42 +28,53 @@ class GetAllRepository:
 
     @classmethod
     async def _get_single_bet(cls, single_bet: SingleBetDb) -> Dict[str, Any]:
+        login_id_str = str(single_bet.id_login)
+        datetime_create = get_datetime_str_or_none(single_bet.create_datetime)
+        datetime_finish = get_datetime_str_or_none(single_bet.finish_datetime)
+
         return dict(
             id=single_bet.id,
-            id_login=single_bet.id_login,
+            id_login=int(login_id_str),
             home_team=single_bet.home_team,
             away_team=single_bet.away_team,
             team_bet=single_bet.team_bet,
-            odd=single_bet.odd,
-            value_invest=single_bet.value_invest,
-            profit=single_bet.profit,
-            potential_earnings=single_bet.potential_earnings,
-            total_amount=single_bet.total_amount,
+            odd=get_decimal_str_or_none(single_bet.odd),
+            value_invest=get_decimal_str_or_none(single_bet.value_invest),
+            profit=get_decimal_str_or_none(single_bet.profit),
+            potential_earnings=get_decimal_str_or_none(single_bet.potential_earnings),
+            total_amount=get_decimal_str_or_none(single_bet.total_amount),
             bet_status=single_bet.bet_status,
             description=single_bet.description,
-            create_datetime=single_bet.create_datetime,
-            finish_datetime=single_bet.finish_datetime,
-            operator_fee=single_bet.operator_fee,
+            create_datetime=datetime_create,
+            finish_datetime=datetime_finish,
+            operator_fee=get_decimal_str_or_none(single_bet.operator_fee),
         )
 
     @classmethod
     async def _get_multi_bet(cls, multi_bet: MultiBetDb) -> Dict[str, Any]:
+        login_id_str = str(multi_bet.id_login)
+        datetime_create = get_datetime_str_or_none(multi_bet.create_datetime)
+        datetime_finish = get_datetime_str_or_none(multi_bet.finish_datetime)
+
         return dict(
             id=multi_bet.id,
-            id_login=multi_bet.id_login,
+            id_login=int(login_id_str),
             home_team=multi_bet.home_team,
             away_team=multi_bet.away_team,
             team_bet=multi_bet.team_bet,
-            value_invest=multi_bet.value_invest,
-            multi_odds=multi_bet.multi_odds,
-            profit=multi_bet.profit,
-            potential_earnings=multi_bet.potential_earnings,
-            total_amount=multi_bet.total_amount,
+            value_invest=get_decimal_str_or_none(multi_bet.value_invest),
+            multi_odds=[
+                get_decimal_str_or_none(odd)
+                for odd in multi_bet.multi_odds
+            ],
+            profit=get_decimal_str_or_none(multi_bet.profit),
+            potential_earnings=get_decimal_str_or_none(multi_bet.potential_earnings),
+            total_amount=get_decimal_str_or_none(multi_bet.total_amount),
             bet_status=multi_bet.bet_status,
             description=multi_bet.description,
-            create_datetime=multi_bet.create_datetime,
-            finish_datetime=multi_bet.finish_datetime,
-            operator_fee=multi_bet.operator_fee,
+            create_datetime=datetime_create,
+            finish_datetime=datetime_finish,
+            operator_fee=get_decimal_str_or_none(multi_bet.operator_fee),
         )
 
     @classmethod

@@ -1,5 +1,9 @@
 from typing import Any, Dict
 
+from functools import reduce
+
+from datetime import datetime, timedelta
+
 from decimal import Decimal
 
 from json import loads
@@ -42,6 +46,12 @@ from src.api.repository.multi_bet_repository import MultiBetRepository
 from src.api.repository.get_all_repository import GetAllRepository
 
 
+def get_datetime_brazil() -> datetime:
+    zone_brazil = timedelta(hours=-3)
+
+    return datetime.utcnow() + zone_brazil
+
+
 class Controller:
 
     @classmethod
@@ -79,6 +89,10 @@ class Controller:
         except ValueError as ve:
             raise BadRequest(ve.args[0])
 
+        single_bet.create_datetime = get_datetime_brazil()
+        single_bet.potential_earnings = single_bet.odd * single_bet.value_invest
+        single_bet.bet_status = single_bet.bet_status.value
+
         return await SingleBetRepository.create_single_bet(single_bet)
 
     @classmethod
@@ -87,6 +101,12 @@ class Controller:
             multi_bet_checker(multi_bet)
         except ValueError as ve:
             raise BadRequest(ve.args[0])
+
+        odds = reduce(lambda x, y: x * y, multi_bet.multi_odds)
+
+        multi_bet.create_datetime = get_datetime_brazil()
+        multi_bet.potential_earnings = multi_bet.value_invest * Decimal(str(odds))
+        multi_bet.bet_status = multi_bet.bet_status.value
 
         return await MultiBetRepository.create_multi_bet(multi_bet)
 
@@ -101,6 +121,8 @@ class Controller:
         except ValueError as ve:
             raise BadRequest(ve.args[0])
 
+        bet_patch_body.finish_datetime = get_datetime_brazil()
+
         return await SingleBetRepository.patch_single_bet(bet_patch_body)
 
     @classmethod
@@ -113,6 +135,8 @@ class Controller:
             multi_bet_patch_checker(bet_patch_body)
         except ValueError as ve:
             raise BadRequest(ve.args[0])
+
+        bet_patch_body.finish_datetime = get_datetime_brazil()
 
         return await MultiBetRepository.patch_multi_bet(bet_patch_body)
 
