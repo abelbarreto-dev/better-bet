@@ -147,7 +147,7 @@ class SingleBetRepository:
                 (SingleBetDb.finish_datetime == single_bet.date_to)
             )
         except Exception:
-            raise DataNotFound("SingleBet profitable Not Found")
+            raise DataNotFound("SingleBet Not Found")
 
         return JSONResponse(
             content=dict(
