@@ -109,7 +109,7 @@ class SingleBetRepository:
                 (SingleBetDb.bet_status == BetStatus.FAILURE)
             )
         except Exception:
-            raise DataNotFound("SingleBet profitable Not Found")
+            raise DataNotFound("SingleBet lost Not Found")
 
         return JSONResponse(
             content=dict(
