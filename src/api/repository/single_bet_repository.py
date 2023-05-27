@@ -95,7 +95,7 @@ class SingleBetRepository:
         return JSONResponse(
             content=dict(
                 single_bet_profits=[
-                    cls._get_single_bet(single_bet)
+                    await cls._get_single_bet(single_bet)
                     for single_bet in bets_single
                 ]
             )
@@ -118,7 +118,7 @@ class SingleBetRepository:
         return JSONResponse(
             content=dict(
                 single_bet_lost=[
-                    cls._get_single_bet(single_bet)
+                    await cls._get_single_bet(single_bet)
                     for single_bet in bets_single
                 ]
             )
@@ -140,7 +140,7 @@ class SingleBetRepository:
         return JSONResponse(
             content=dict(
                 single_bet_profits=[
-                    cls._get_single_bet(single_bet)
+                    await cls._get_single_bet(single_bet)
                     for single_bet in bets_single
                 ]
             )

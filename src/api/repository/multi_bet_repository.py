@@ -24,6 +24,26 @@ class MultiBetRepository:
         create_multi_bet()
 
     @classmethod
+    async def _get_multi_bet(cls, multi_bet: MultiBetDb) -> MultiBet:
+        return MultiBet(
+            id=multi_bet.id,
+            id_login=multi_bet.id_login,
+            home_team=multi_bet.home_team,
+            away_team=multi_bet.away_team,
+            team_bet=multi_bet.team_bet,
+            value_invest=multi_bet.value_invest,
+            multi_odds=multi_bet.multi_odds,
+            profit=multi_bet.profit,
+            potential_earnings=multi_bet.potential_earnings,
+            total_amount=multi_bet.total_amount,
+            bet_status=multi_bet.bet_status,
+            description=multi_bet.description,
+            create_datetime=multi_bet.create_datetime,
+            finish_datetime=multi_bet.finish_datetime,
+            operator_fee=multi_bet.operator_fee,
+        )
+
+    @classmethod
     async def create_multi_bet(cls, multi_bet: MultiBet) -> Response:
         await cls._multi_bet_table()
 
@@ -78,23 +98,7 @@ class MultiBetRepository:
         return JSONResponse(
             content=dict(
                 multi_bet_profits=[
-                    MultiBet(
-                        id=multi_bet.id,
-                        id_login=multi_bet.id_login,
-                        home_team=multi_bet.home_team,
-                        away_team=multi_bet.away_team,
-                        team_bet=multi_bet.team_bet,
-                        value_invest=multi_bet.value_invest,
-                        multi_odds=multi_bet.multi_odds,
-                        profit=multi_bet.profit,
-                        potential_earnings=multi_bet.potential_earnings,
-                        total_amount=multi_bet.total_amount,
-                        bet_status=multi_bet.bet_status,
-                        description=multi_bet.description,
-                        create_datetime=multi_bet.create_datetime,
-                        finish_datetime=multi_bet.finish_datetime,
-                        operator_fee=multi_bet.operator_fee,
-                    )
+                    await cls._get_multi_bet(multi_bet)
                     for multi_bet in bets_multi
                 ]
             )
@@ -117,23 +121,7 @@ class MultiBetRepository:
         return JSONResponse(
             content=dict(
                 multi_bet_profits=[
-                    MultiBet(
-                        id=multi_bet.id,
-                        id_login=multi_bet.id_login,
-                        home_team=multi_bet.home_team,
-                        away_team=multi_bet.away_team,
-                        team_bet=multi_bet.team_bet,
-                        value_invest=multi_bet.value_invest,
-                        multi_odds=multi_bet.multi_odds,
-                        profit=multi_bet.profit,
-                        potential_earnings=multi_bet.potential_earnings,
-                        total_amount=multi_bet.total_amount,
-                        bet_status=multi_bet.bet_status,
-                        description=multi_bet.description,
-                        create_datetime=multi_bet.create_datetime,
-                        finish_datetime=multi_bet.finish_datetime,
-                        operator_fee=multi_bet.operator_fee,
-                    )
+                    await cls._get_multi_bet(multi_bet)
                     for multi_bet in bets_multi
                 ]
             )
@@ -155,23 +143,7 @@ class MultiBetRepository:
         return JSONResponse(
             content=dict(
                 multi_bet_profits=[
-                    MultiBet(
-                        id=multi_bet.id,
-                        id_login=multi_bet.id_login,
-                        home_team=multi_bet.home_team,
-                        away_team=multi_bet.away_team,
-                        team_bet=multi_bet.team_bet,
-                        value_invest=multi_bet.value_invest,
-                        multi_odds=multi_bet.multi_odds,
-                        profit=multi_bet.profit,
-                        potential_earnings=multi_bet.potential_earnings,
-                        total_amount=multi_bet.total_amount,
-                        bet_status=multi_bet.bet_status,
-                        description=multi_bet.description,
-                        create_datetime=multi_bet.create_datetime,
-                        finish_datetime=multi_bet.finish_datetime,
-                        operator_fee=multi_bet.operator_fee,
-                    )
+                    await cls._get_multi_bet(multi_bet)
                     for multi_bet in bets_multi
                 ]
             )
