@@ -1,3 +1,5 @@
+from typing import Dict, Any
+
 from fastapi import Response
 
 from starlette.responses import JSONResponse
@@ -24,8 +26,8 @@ class MultiBetRepository:
         create_multi_bet()
 
     @classmethod
-    async def _get_multi_bet(cls, multi_bet: MultiBetDb) -> MultiBet:
-        return MultiBet(
+    async def _get_multi_bet(cls, multi_bet: MultiBetDb) -> Dict[str, Any]:
+        return dict(
             id=multi_bet.id,
             id_login=multi_bet.id_login,
             home_team=multi_bet.home_team,

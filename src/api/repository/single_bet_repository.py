@@ -1,3 +1,5 @@
+from typing import Dict, Any
+
 from fastapi import Response
 
 from starlette.responses import JSONResponse
@@ -21,8 +23,8 @@ class SingleBetRepository:
         create_single_bet()
 
     @classmethod
-    async def _get_single_bet(cls, single_bet: SingleBetDb) -> SingleBet:
-        return SingleBet(
+    async def _get_single_bet(cls, single_bet: SingleBetDb) -> Dict[str, Any]:
+        return dict(
             id=single_bet.id,
             id_login=single_bet.id_login,
             home_team=single_bet.home_team,
