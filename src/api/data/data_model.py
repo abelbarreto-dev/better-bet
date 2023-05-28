@@ -38,7 +38,7 @@ class SingleBet(BaseModel):
     description = CharField(max_length=256, null=True)
     create_datetime = DateTimeField(null=False)
     finish_datetime = DateTimeField(null=True)
-    operator_fee = DecimalField(decimal_places=2, null=True)
+    operator_fee = DecimalField(decimal_places=4, null=True)
 
 
 class MultiBet(BaseModel):
@@ -56,4 +56,4 @@ class MultiBet(BaseModel):
     description = CharField(max_length=256, null=True)
     create_datetime = DateTimeField(null=False)
     finish_datetime = DateTimeField(null=True)
-    operator_fee = DecimalField(decimal_places=2, null=True)
+    operator_fee = DecimalField(decimal_places=4, null=True)
