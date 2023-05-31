@@ -7,21 +7,25 @@ to create an account.
 
 ## Summary
 
-1. Dependencies
+1. [Dependencies](#dependencies)
    1. Python and Pip
    2. FastAPI
    3. Peewee
-   4. Uvicorn
-2. Models
-   1. Login
-   2. Single Bet
-   3. Multi Bet
-3. Models of Body
-4. Project Structure
-5. API Routes
-6. Database Relationship
-   1. TODO
-7. FAQ
+2. [How To Run](#how-to-run)
+3. [Models](#models)
+   1. [Login](#login)
+   2. [Single Bet](#singlebet)
+   3. [Multi Bet](#multibet)
+4. [Models of Body](#models-of-body)
+   1. [BetPatchBody](#betpatchbody)
+   2. [DateFromToBody](#datefromtobody)
+   3. [DateFilterBody](#datefilterbody)
+5. [Project Structure](#project-structure)
+   1. [Source Package](#source-package)
+   2. [Test Package](#test-package)
+6. [API Routes](#api-routes)
+7. [Database Relationship](#database-relationship)
+8. [FAQ](#faq)
 
 ## Dependencies
 
@@ -35,11 +39,20 @@ Here you'll see the list of dependencies from this project.
 > Note: you can install uvicorn searching for install it by
 > pip from FastAPI website.
 
+## How to Run?
+
+Before you run this project, you need to check if all [dependencies](#dependencies)
+are installed and access [FAQ](#faq) to set the file `settings.json` and
+`.env` configurations.
+
+After you need to run the file:
+[app.py](src/api/app/app.py) and enjoy!
+
 ## Models
 
 Bellow you can see our methods.
 
-> class Login
+### Login
 
 ```json
 {
@@ -49,7 +62,7 @@ Bellow you can see our methods.
 }
 ```
 
-> class SingleBet
+### SingleBet
 
 ```json
 {
@@ -64,7 +77,7 @@ Bellow you can see our methods.
 }
 ```
 
-> class MultiBet
+### MultiBet
 
 ```json
 {
@@ -83,20 +96,18 @@ Bellow you can see our methods.
 
 ## Models of Body
 
-> class BetPatchBody
+Bodies to use as a custom JSON to make API operations.
+
+### BetPatchBody
 
 ```json
 {
    "id": 0,
    "bet_status": "string",
-   "finish_datetime": "2023-05-24 22:53:28.293153",
-   "operator_fee": "1.00",
-   "total_amount": "1.00",
-   "profit": "1.00"
 }
 ```
 
-> class DateFromToBody
+### DateFromToBody
 
 ```json
 {
@@ -106,7 +117,7 @@ Bellow you can see our methods.
 }
 ```
 
-> class DateFilterBody
+### DateFilterBody
 
 ```json
 {
@@ -121,6 +132,8 @@ Bellow you can see our methods.
 Here you can see the project tree for `source` and `tests` folders.
 I used the structure of a `html` code. Each tag
 means a package.
+
+### Source Package
 
 ```html
 <src>
@@ -160,11 +173,15 @@ means a package.
       bet_status.py
       checker.py
       connection.py
+      create_tables.py
       exceptions.py
+      types_utils.py
    </utils>
    __init__.py
 </src>
 ```
+
+### Test Package
 
 ```html
 <test>
@@ -202,8 +219,8 @@ Here I present our routes for this API. It will be in `JSON` format.
     "get_profits_multi": "/bet/multi/profits",
     "get_lost_single": "/bet/single/lost",
     "get_lost_multi": "/bet/multi/lost",
-    "get_all_profits": "/bet/profits/all",
-    "get_all_lost": "/bet/lost/all",
+    "get_all_profits": "/bet/profits/{id_login}/all",
+    "get_all_lost": "/bet/lost/{id_login}/all",
     "post_compound_interest": "/compound-interest"
 }
 ```
@@ -212,8 +229,92 @@ So we can see the name and the link to each endpoint at this API.
 
 ## Database Relationship
 
-### # [TODO](#)
+The main class of this project is named `Login`. So we have others 2 (two) database
+entities, `SingleBet` and `MultiBet`. Both are independent, but both is linked to `Login`.
+
+```commandline
+                        [ Login ]
+                     ___/       \___                        Login <> SingleBet
+                 ___/               \___                    Login <> MultiBet
+             ___/                       \___
+            /                               \
+      SingleBet                           MultiBet
+```
 
 ## FAQ
 
-### # [TODO](#)
+At this point, we select common questions to answer.
+
+<details>
+   <summary>
+      How to create a file <code>settings.json</code>?
+   </summary>
+   <p>
+      Note: it must be at project's root directory.
+   </p>
+   <p>
+      After, paste the following text:
+      <code>
+         {"database": "staging"}
+      </code>
+   </p>
+</details>
+
+<details>
+   <summary>
+      How to set the file <code>.env</code>?
+   </summary>
+   <p>
+      At root directory, you will find the file <code>.env.example</code>. Copy
+      it and rename to <code>.env</code>, so open and sets the information required
+      there.
+   </p>
+   <ul>
+      <li><code>DATABASE_HOST</code></li>
+      <li><code>DATABASE_PORT</code></li>
+      <li><code>DATABASE_NAME</code></li>
+      <li><code>DATABASE_USER</code></li>
+      <li><code>DATABASE_PASSWD</code></li>
+   </ul>
+   <p>You need to fill these variables.</p>
+</details>
+
+<details>
+   <summary>
+      How the module <code>set_config.py</code> works?
+   </summary>
+   <p>
+      This module has functions to use as a switch between databases as part
+      of this file to change the database between <code>staging</code>,
+      <code>production</code> and <code>testing</code>.
+   </p>
+</details>
+
+<details>
+   <summary>
+      What's the field <code>potential_earnings</code>?
+   </summary>
+   <p>
+      This field represents the earnings without the <code>operator_fee</code>.
+   </p>
+</details>
+
+<details>
+   <summary>
+      What's the field <code>total_amount</code>?
+   </summary>
+   <p>
+      This field represents the real earning after apply the <code>operator_fee</code>.
+   </p>
+</details>
+
+<details>
+   <summary>
+      What's the field <code>profit</code>?
+   </summary>
+   <p>
+      This field represents the profit of operation or the <code>value_invest * odd</code>
+   </p>
+</details>
+
+[Back to Start](#better-bet)
