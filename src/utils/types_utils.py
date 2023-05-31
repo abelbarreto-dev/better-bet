@@ -1,5 +1,10 @@
 from typing import Any
-from datetime import datetime
+
+from datetime import (
+    datetime,
+    timedelta,
+)
+
 from decimal import Decimal
 
 
@@ -15,3 +20,9 @@ def get_datetime_str_or_none(value: datetime) -> Any:
         return str(value)
 
     return value
+
+
+def get_datetime_brazil() -> datetime:
+    zone_brazil = timedelta(hours=-3)
+
+    return datetime.utcnow() + zone_brazil

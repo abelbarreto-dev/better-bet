@@ -2,6 +2,8 @@ from typing import Dict, Any
 
 from fastapi import Response
 
+from functools import reduce
+
 from starlette.responses import JSONResponse
 
 from src.api.models.request_body import (
@@ -17,6 +19,7 @@ from src.utils.bet_status import BetStatus
 from src.utils.types_utils import (
     get_decimal_str_or_none,
     get_datetime_str_or_none,
+    get_datetime_brazil,
 )
 
 from src.utils.create_tables import create_multi_bet
@@ -82,10 +85,13 @@ class MultiBetRepository:
             )
 
             bet_multi.bet_status = multi_bet.bet_status.value
-            bet_multi.finish_datetime = multi_bet.finish_datetime
-            bet_multi.operator_fee = multi_bet.operator_fee
-            bet_multi.total_amount = multi_bet.total_amount
-            bet_multi.profit = multi_bet.profit
+            bet_multi.finish_datetime = get_datetime_brazil()
+
+            odds = reduce(lambda x, y: x * y, bet_multi.multi_odds)
+            bet_multi.profit = bet_multi.value_invest * odds
+            total_amount = bet_multi.potential_earnings - (bet_multi.profit * bet_multi.operator_fee)
+
+            bet_multi.total_amount = total_amount
 
             bet_multi.save()
         except Exception:

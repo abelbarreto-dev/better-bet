@@ -12,7 +12,6 @@ from src.api.models.api_models import (
 )
 
 from src.api.models.request_body import (
-    BetPatchBody,
     DateFromToBody,
     DateFilterBody,
 )
@@ -96,20 +95,6 @@ def multi_bet_checker(multi_bet: MultiBet) -> None:
         "create_datetime",
         "finish_datetime"
     )
-
-
-def single_bet_patch_checker(single_bet: BetPatchBody) -> None:
-    percent_checker(single_bet.operator_fee, "operator_fee")
-    money_checker(single_bet.total_amount, "total_amount")
-    money_checker(single_bet.profit, "profit")
-    datetime_none_checker(single_bet.finish_datetime, "finish_datetime")
-
-
-def multi_bet_patch_checker(multi_bet: BetPatchBody) -> None:
-    percent_checker(multi_bet.operator_fee, "operator_fee")
-    money_checker(multi_bet.total_amount, "total_amount")
-    money_checker(multi_bet.profit, "profit")
-    datetime_none_checker(multi_bet.finish_datetime, "finish_datetime")
 
 
 def compound_interest_checker(compound_interest: CompoundInterest) -> None:
