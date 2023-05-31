@@ -17,6 +17,7 @@ from src.utils.bet_status import BetStatus
 from src.utils.types_utils import (
     get_decimal_str_or_none,
     get_datetime_str_or_none,
+    get_datetime_brazil,
 )
 
 from src.utils.create_tables import create_single_bet
@@ -79,10 +80,12 @@ class SingleBetRepository:
             )
 
             bet_single.bet_status = single_bet.bet_status.value
-            bet_single.finish_datetime = single_bet.finish_datetime
-            bet_single.operator_fee = single_bet.operator_fee
-            bet_single.total_amount = single_bet.total_amount
-            bet_single.profit = single_bet.profit
+            bet_single.finish_datetime = get_datetime_brazil()
+            bet_single.profit = bet_single.value_invest * bet_single.odd
+
+            total_amount = bet_single.potential_earnings - (bet_single.profit * bet_single.operator_fee)
+
+            bet_single.total_amount = total_amount
 
             bet_single.save()
         except Exception:
