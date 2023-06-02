@@ -1,5 +1,7 @@
 from typing import Dict, Any
 
+from peewee import OperationalError
+
 from fastapi import Response
 
 from starlette.responses import JSONResponse
@@ -63,7 +65,7 @@ class SingleBetRepository:
             new_single_bet = SingleBetDb.insert(**single_bet.dict())
 
             new_single_bet.execute()
-        except Exception:
+        except (Exception, OperationalError):
             raise UnprocessedEntityException("SingleBet")
 
         return Response(
