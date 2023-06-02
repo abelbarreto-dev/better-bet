@@ -6,6 +6,8 @@ from src.api.data.data_model import (
     MultiBet,
 )
 
+from set_config import to_staging
+
 
 def create_login() -> None:
     with Database.connect() as db:
@@ -20,3 +22,10 @@ def create_single_bet() -> None:
 def create_multi_bet() -> None:
     with Database.connect() as db:
         db.create_tables([MultiBet])
+
+
+def drop_all_tables() -> None:
+    SingleBet.drop_table()
+    MultiBet.drop_table()
+    Login.drop_table()
+    to_staging()
