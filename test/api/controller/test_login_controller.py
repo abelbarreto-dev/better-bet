@@ -19,6 +19,8 @@ def test_post_login_success(client: TestClient) -> None:
 
     assert created_login.status_code == 204
 
+    drop_all_tables()
+
 
 def test_post_login_failure_empty_json(client: TestClient) -> None:
     drop_all_tables()
@@ -29,6 +31,8 @@ def test_post_login_failure_empty_json(client: TestClient) -> None:
     )
 
     assert created_login.status_code == 422
+
+    drop_all_tables()
 
 
 def test_post_login_failure_existing_login(client: TestClient) -> None:
@@ -59,6 +63,8 @@ def test_post_login_failure_existing_login(client: TestClient) -> None:
         }
     }
 
+    drop_all_tables()
+
 
 def test_login_checker_failure(client: TestClient) -> None:
     drop_all_tables()
@@ -75,6 +81,8 @@ def test_login_checker_failure(client: TestClient) -> None:
     )
 
     assert created_login.status_code == 400
+
+    drop_all_tables()
 
 
 def test_login_auth_success(client: TestClient) -> None:
@@ -99,6 +107,8 @@ def test_login_auth_success(client: TestClient) -> None:
 
     assert created_login.status_code == 204
     assert make_login.status_code == 200
+
+    drop_all_tables()
 
 
 def test_login_auth_failure_checker(client: TestClient) -> None:
@@ -126,6 +136,8 @@ def test_login_auth_failure_checker(client: TestClient) -> None:
     assert created_login.status_code == 204
     assert make_login.status_code == 400
 
+    drop_all_tables()
+
 
 def test_login_auth_failure(client: TestClient) -> None:
     drop_all_tables()
@@ -151,3 +163,5 @@ def test_login_auth_failure(client: TestClient) -> None:
 
     assert created_login.status_code == 204
     assert make_login.status_code == 404
+
+    drop_all_tables()
