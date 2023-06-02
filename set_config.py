@@ -6,21 +6,11 @@ from json import (
 )
 
 
-FILE = {
-    "test": "../settings.json",
-    "default": "../../../settings.json"
-}
+FILE = "settings.json"
 
 
 def get_settings() -> dict:
-    file = ""
-
-    if Path(FILE["test"]).is_file():
-        file = FILE["test"]
-    elif Path(FILE["default"]).is_file():
-        file = FILE["default"]
-
-    with open(file, "r", encoding="utf-8") as new_file:
+    with open(FILE, "r", encoding="utf-8") as new_file:
         data_file = to_dict(new_file.read())
 
     return data_file
@@ -31,7 +21,7 @@ def to_testing() -> None:
 
     data_file["database"] = "testing"
 
-    with open(FILE["test"], "w", encoding="utf-8") as file:
+    with open(FILE, "w", encoding="utf-8") as file:
         file.writelines(to_json(data_file, indent=4))
 
 
@@ -40,7 +30,7 @@ def to_staging() -> None:
 
     data_file["database"] = "staging"
 
-    with open(FILE["default"], "w", encoding="utf-8") as file:
+    with open(FILE, "w", encoding="utf-8") as file:
         file.writelines(to_json(data_file, indent=4))
 
 
@@ -49,5 +39,5 @@ def to_production() -> None:
 
     data_file["database"] = "production"
 
-    with open(FILE["default"], "w", encoding="utf-8") as file:
+    with open(FILE, "w", encoding="utf-8") as file:
         file.writelines(to_json(data_file, indent=4))
