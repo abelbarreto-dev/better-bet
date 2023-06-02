@@ -1,12 +1,17 @@
-from json import loads as to_dict, dumps as to_json
+from pathlib import Path
+
+from json import (
+    loads as to_dict,
+    dumps as to_json,
+)
 
 
-FILE = "../../../settings.json"
+FILE = "settings.json"
 
 
 def get_settings() -> dict:
-    with open(FILE, "r", encoding="utf-8") as file:
-        data_file = to_dict(file.read())
+    with open(FILE, "r", encoding="utf-8") as new_file:
+        data_file = to_dict(new_file.read())
 
     return data_file
 
