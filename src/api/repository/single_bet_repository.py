@@ -1,6 +1,6 @@
 from typing import Dict, Any
 
-from peewee import OperationalError
+from peewee import OperationalError, DoesNotExist
 
 from fastapi import Response
 
@@ -77,7 +77,7 @@ class SingleBetRepository:
         await cls._single_bet_table()
 
         try:
-            bet_single: SingleBetDb = SingleBetDb.get(
+            bet_single = SingleBetDb.get(
                 SingleBetDb.id == single_bet.id
             )
 
@@ -90,6 +90,8 @@ class SingleBetRepository:
             bet_single.total_amount = total_amount
 
             bet_single.save()
+        except DoesNotExist:
+            raise DataNotFound("SingleBet Not Found")
         except Exception:
             raise UnprocessedEntityException("SingleBet")
 
