@@ -57,7 +57,7 @@ async def get_filter_multi(date_filter: Request) -> Any:
     return await Controller.get_filter_multi(date_filter)
 
 
-@ROUTER.get(ROUTES["get_profits_single"])
+@ROUTER.post(ROUTES["get_profits_single"])
 async def get_profits_single(profits_single: Request) -> Any:
     return await Controller.get_profits_single(profits_single)
 
