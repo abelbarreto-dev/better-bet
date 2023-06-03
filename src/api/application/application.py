@@ -81,9 +81,11 @@ class Controller:
         except ValueError as ve:
             raise BadRequest(ve.args[0])
 
+        if single_bet.bet_status is not None:
+            single_bet.bet_status = single_bet.bet_status.value
+
         single_bet.create_datetime = get_datetime_brazil()
         single_bet.potential_earnings = single_bet.value_invest + single_bet.odd * single_bet.value_invest
-        single_bet.bet_status = single_bet.bet_status.value
 
         return await SingleBetRepository.create_single_bet(single_bet)
 

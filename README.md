@@ -12,20 +12,23 @@ to create an account.
    2. FastAPI
    3. Peewee
 2. [How To Run](#how-to-run)
-3. [Models](#models)
+3. [How To Test](#how-to-test)
+   1. Run Specific Tests
+   2. Run All Tests
+4. [Models](#models)
    1. [Login](#login)
    2. [Single Bet](#singlebet)
    3. [Multi Bet](#multibet)
-4. [Models of Body](#models-of-body)
+5. [Models of Body](#models-of-body)
    1. [BetPatchBody](#betpatchbody)
    2. [DateFromToBody](#datefromtobody)
    3. [DateFilterBody](#datefilterbody)
-5. [Project Structure](#project-structure)
+6. [Project Structure](#project-structure)
    1. [Source Package](#source-package)
    2. [Test Package](#test-package)
-6. [API Routes](#api-routes)
-7. [Database Relationship](#database-relationship)
-8. [FAQ](#faq)
+7. [API Routes](#api-routes)
+8. [Database Relationship](#database-relationship)
+9. [FAQ](#faq)
 
 ## Dependencies
 
@@ -39,14 +42,31 @@ Here you'll see the list of dependencies from this project.
 > Note: you can install uvicorn searching for install it by
 > pip from FastAPI website.
 
-## How to Run?
+## How To Run?
 
 Before you run this project, you need to check if all [dependencies](#dependencies)
 are installed and access [FAQ](#faq) to set the file `settings.json` and
 `.env` configurations.
 
-After you need to run the file:
-[app.py](src/api/app/app.py) and enjoy!
+To run this project, after you have made what was described here, you need to run the following
+command:
+
+```commandline
+uvicorn main:app --reload
+```
+
+## How To Test?
+
+To run unit tests here you need to check what is described at [How to Run](#how-to-run) topic. After
+you have two options:
+
+1. Access the package [test](test/api) then you have two options:
+   1. [controller](test/api/controller) the endpoints tests
+   2. [repository](test/api/repository) the persistence tests
+2. Run the following command in [root dir](/) for run all tests:
+   1. ```commandline
+      pytest
+      ```
 
 ## Models
 
@@ -188,6 +208,7 @@ means a package.
    <api>
       <controller>
          __init__.py
+         test_login_controller.py
       </controller>
       <repository>
          __init__.py
@@ -198,6 +219,7 @@ means a package.
       __init__.py
    </mock>
    __init__.py
+   conftest.py
 </test>
 ```
 
@@ -213,7 +235,7 @@ Here I present our routes for this API. It will be in `JSON` format.
     "post_multi_bet": "/bet/multi",
     "patch_single_bet": "/bet/single",
     "patch_multi_bet": "/bet/multi",
-    "get_filter_single": "/bet/single",
+    "get_filter_single": "/get/bet/single",
     "get_filter_multi": "/bet/multi",
     "get_profits_single": "/bet/single/profits",
     "get_profits_multi": "/bet/multi/profits",

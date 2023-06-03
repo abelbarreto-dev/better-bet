@@ -1,5 +1,7 @@
 from typing import Dict, Any
 
+from peewee import OperationalError, DoesNotExist
+
 from fastapi import Response
 
 from starlette.responses import JSONResponse
@@ -63,7 +65,7 @@ class SingleBetRepository:
             new_single_bet = SingleBetDb.insert(**single_bet.dict())
 
             new_single_bet.execute()
-        except Exception:
+        except (Exception, OperationalError):
             raise UnprocessedEntityException("SingleBet")
 
         return Response(
@@ -75,7 +77,7 @@ class SingleBetRepository:
         await cls._single_bet_table()
 
         try:
-            bet_single: SingleBetDb = SingleBetDb.get(
+            bet_single = SingleBetDb.get(
                 SingleBetDb.id == single_bet.id
             )
 
@@ -88,6 +90,8 @@ class SingleBetRepository:
             bet_single.total_amount = total_amount
 
             bet_single.save()
+        except DoesNotExist:
+            raise DataNotFound("SingleBet Not Found")
         except Exception:
             raise UnprocessedEntityException("SingleBet")
 

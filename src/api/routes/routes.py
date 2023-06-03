@@ -5,7 +5,7 @@ ROUTES = {
     "post_multi_bet": "/bet/multi",
     "patch_single_bet": "/bet/single",
     "patch_multi_bet": "/bet/multi",
-    "get_filter_single": "/bet/single",
+    "get_filter_single": "/get/bet/single",
     "get_filter_multi": "/bet/multi",
     "get_profits_single": "/bet/single/profits",
     "get_profits_multi": "/bet/multi/profits",

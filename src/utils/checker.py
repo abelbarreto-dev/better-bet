@@ -35,7 +35,7 @@ from src.utils.exceptions import (
 
 class Regex:
     username = r"^[_a-z]{1,64}$"
-    password = r"^.{1,512}$"
+    password = r"^[A-Za-z0-9*!@#$£\/ç\(¢\)<`´>\[&\]^\\+_-|%§]{1,512}$"
     description = r"^.{1,256}$"
     player_name = r"^[a-zA-Z0-9\s]+$"
     team_bet = r"^.{1,128}$"
