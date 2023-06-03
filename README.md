@@ -209,15 +209,13 @@ means a package.
       <controller>
          __init__.py
          test_login_controller.py
+         test_single_bet_controller.py
       </controller>
       <repository>
          __init__.py
       </repository>
       __init__.py
    </api>
-   <mock>
-      __init__.py
-   </mock>
    __init__.py
    conftest.py
 </test>
