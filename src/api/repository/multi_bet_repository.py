@@ -1,5 +1,7 @@
 from typing import Dict, Any
 
+from peewee import DoesNotExist
+
 from fastapi import Response
 
 from functools import reduce
@@ -94,6 +96,8 @@ class MultiBetRepository:
             bet_multi.total_amount = total_amount
 
             bet_multi.save()
+        except DoesNotExist:
+            raise DataNotFound("MultiBet Not Found")
         except Exception:
             raise UnprocessedEntityException("MultiBet")
 
