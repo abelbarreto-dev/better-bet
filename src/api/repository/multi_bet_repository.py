@@ -1,5 +1,9 @@
 from typing import Dict, Any
 
+from decimal import Decimal
+
+from peewee import DoesNotExist
+
 from fastapi import Response
 
 from functools import reduce
@@ -36,8 +40,8 @@ class MultiBetRepository:
 
     @classmethod
     async def _get_multi_bet(cls, multi_bet: MultiBetDb) -> Dict[str, Any]:
-        datetime_create = get_datetime_str_or_none(multi_bet.create_datetime)
-        datetime_finish = get_datetime_str_or_none(multi_bet.finish_datetime)
+        datetime_create = get_datetime_str_or_none(multi_bet["create_datetime"])
+        datetime_finish = get_datetime_str_or_none(multi_bet["finish_datetime"])
 
         return {
             "id": multi_bet["id"],
@@ -87,13 +91,17 @@ class MultiBetRepository:
             bet_multi.bet_status = multi_bet.bet_status.value
             bet_multi.finish_datetime = get_datetime_brazil()
 
-            odds = reduce(lambda x, y: x * y, bet_multi.multi_odds)
+            multi_odds = eval(bet_multi.multi_odds)
+
+            odds = reduce(lambda x, y: Decimal(x) * Decimal(y), multi_odds)
             bet_multi.profit = bet_multi.value_invest * odds
             total_amount = bet_multi.potential_earnings - (bet_multi.profit * bet_multi.operator_fee)
 
             bet_multi.total_amount = total_amount
 
             bet_multi.save()
+        except DoesNotExist:
+            raise DataNotFound("MultiBet Not Found")
         except Exception:
             raise UnprocessedEntityException("MultiBet")
 

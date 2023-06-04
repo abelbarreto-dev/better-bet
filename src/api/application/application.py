@@ -98,9 +98,11 @@ class Controller:
 
         odds = reduce(lambda x, y: x * y, multi_bet.multi_odds)
 
+        if multi_bet.bet_status is not None:
+            multi_bet.bet_status = multi_bet.bet_status.value
+
         multi_bet.create_datetime = get_datetime_brazil()
         multi_bet.potential_earnings = multi_bet.value_invest + multi_bet.value_invest * Decimal(str(odds))
-        multi_bet.bet_status = multi_bet.bet_status.value
 
         return await MultiBetRepository.create_multi_bet(multi_bet)
 

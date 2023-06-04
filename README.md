@@ -210,6 +210,7 @@ means a package.
          __init__.py
          test_login_controller.py
          test_single_bet_controller.py
+         test_multi_bet_controller.py
       </controller>
       <repository>
          __init__.py
@@ -234,7 +235,7 @@ Here I present our routes for this API. It will be in `JSON` format.
     "patch_single_bet": "/bet/single",
     "patch_multi_bet": "/bet/multi",
     "get_filter_single": "/get/bet/single",
-    "get_filter_multi": "/bet/multi",
+    "get_filter_multi": "/get/bet/multi",
     "get_profits_single": "/bet/single/profits",
     "get_profits_multi": "/bet/multi/profits",
     "get_lost_single": "/bet/single/lost",
