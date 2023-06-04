@@ -1,5 +1,3 @@
-from json import dumps as to_json
-
 from src.api.data.data_model import Login
 
 from src.utils.create_tables import drop_all_tables
@@ -9,8 +7,6 @@ from fastapi.testclient import TestClient
 from src.api.routes.routes import ROUTES
 
 from src.utils.types_utils import get_datetime_brazil
-
-from urllib.parse import urlencode
 
 
 def test_post_single_bet_success(client: TestClient) -> None:
