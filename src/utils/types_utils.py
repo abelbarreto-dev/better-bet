@@ -8,6 +8,10 @@ from datetime import (
 from decimal import Decimal
 
 
+class Token(str):
+    pass
+
+
 def get_decimal_str_or_none(value: Decimal) -> Any:
     if value is not None:
         return str(value)
