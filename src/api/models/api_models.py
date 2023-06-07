@@ -21,9 +21,9 @@ class LoginAuth(BaseModel):
 
 
 class SingleBet(BaseModel):
-    id_login: int
     odd: Decimal
     value_invest: Decimal
+    id_login: Optional[int] = None
     description: Optional[str] = None
     home_team: Optional[str] = None
     away_team: Optional[str] = None
@@ -39,8 +39,8 @@ class SingleBet(BaseModel):
 
 
 class MultiBet(BaseModel):
-    id_login: int
     value_invest: Decimal
+    id_login: Optional[int] = None
     description: Optional[str] = None
     home_team: Optional[str] = None
     away_team: Optional[str] = None

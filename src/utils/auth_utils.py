@@ -36,6 +36,7 @@ async def get_logged_user(token: Token = Depends(oauth2_schema)) -> Any:
         raise exception
 
     return dict(
+        id=login.id,
         player_name=login.player_name,
         username=login.username,
     )
