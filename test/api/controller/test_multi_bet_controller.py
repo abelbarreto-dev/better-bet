@@ -1,4 +1,4 @@
-from src.api.data.data_model import Login
+import pytest
 
 from src.utils.create_tables import drop_all_tables
 
@@ -6,20 +6,25 @@ from fastapi.testclient import TestClient
 
 from src.api.routes.routes import ROUTES
 
-from src.utils.types_utils import get_datetime_brazil
+from src.utils.types_utils import (
+    get_datetime_brazil,
+    Token,
+)
+
+from test.api.utils.login_opps import (
+    create_login,
+    make_login,
+)
+
+from test.api.utils.get_auth_headers import headers_acc_tk
 
 
-def test_post_multi_bet_success(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_post_multi_bet_success(client: TestClient) -> None:
     drop_all_tables()
 
-    created_login = client.post(
-        ROUTES["post_login"],
-        json={
-            "player_name": "Abel Developer",
-            "username": "abel_dev",
-            "password": "ahjfnnjh44fuK5"
-        }
-    )
+    created_login = create_login(client)
+    access_token = await make_login(client)
 
     created_multi_bet = client.post(
         ROUTES["post_multi_bet"],
@@ -37,7 +42,8 @@ def test_post_multi_bet_success(client: TestClient) -> None:
             "away_team": "Manchester City",
             "team_bet": None,
             "operator_fee": "0.065"
-        }
+        },
+        headers=headers_acc_tk(Token(access_token)),
     )
 
     assert created_login.status_code == 204
@@ -46,46 +52,12 @@ def test_post_multi_bet_success(client: TestClient) -> None:
     drop_all_tables()
 
 
-def test_post_multi_bet_failure(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_post_multi_bet_checker_failure(client: TestClient) -> None:
     drop_all_tables()
 
-    Login.create_table()
-
-    created_multi_bet = client.post(
-        ROUTES["post_multi_bet"],
-        json={
-            "id_login_id": 1,
-            "multi_odds": [
-                "1.25",
-                "1.12",
-                "1.15",
-                "1.07"
-            ],
-            "value_invest": "250.00",
-            "description": "+0.5 goals",
-            "home_team": "Liverpool",
-            "away_team": "Manchester City",
-            "team_bet": None,
-            "operator_fee": "0.065"
-        }
-    )
-
-    assert created_multi_bet.status_code == 422
-
-    drop_all_tables()
-
-
-def test_post_multi_bet_checker_failure(client: TestClient) -> None:
-    drop_all_tables()
-
-    created_login = client.post(
-        ROUTES["post_login"],
-        json={
-            "player_name": "Abel Developer",
-            "username": "abel_dev",
-            "password": "ahjfnnjh44fuK5"
-        }
-    )
+    created_login = create_login(client)
+    access_token = await make_login(client)
 
     created_multi_bet = client.post(
         ROUTES["post_multi_bet"],
@@ -103,7 +75,8 @@ def test_post_multi_bet_checker_failure(client: TestClient) -> None:
             "away_team": "Manchester City",
             "team_bet": None,
             "operator_fee": "0.065"
-        }
+        },
+        headers=headers_acc_tk(Token(access_token)),
     )
 
     assert created_login.status_code == 204
@@ -112,17 +85,12 @@ def test_post_multi_bet_checker_failure(client: TestClient) -> None:
     drop_all_tables()
 
 
-def test_patch_multi_bet_success(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_patch_multi_bet_success(client: TestClient) -> None:
     drop_all_tables()
 
-    created_login = client.post(
-        ROUTES["post_login"],
-        json={
-            "player_name": "Abel Developer",
-            "username": "abel_dev",
-            "password": "ahjfnnjh44fuK5"
-        }
-    )
+    created_login = create_login(client)
+    access_token = await make_login(client)
 
     created_multi_bet = client.post(
         ROUTES["post_multi_bet"],
@@ -140,7 +108,8 @@ def test_patch_multi_bet_success(client: TestClient) -> None:
             "away_team": "Manchester City",
             "team_bet": None,
             "operator_fee": "0.065"
-        }
+        },
+        headers=headers_acc_tk(Token(access_token)),
     )
 
     patch_multi_bet = client.patch(
@@ -148,7 +117,8 @@ def test_patch_multi_bet_success(client: TestClient) -> None:
         json={
             "id": 1,
             "bet_status": "success"
-        }
+        },
+        headers=headers_acc_tk(Token(access_token)),
     )
 
     assert created_login.status_code == 204
@@ -158,17 +128,12 @@ def test_patch_multi_bet_success(client: TestClient) -> None:
     drop_all_tables()
 
 
-def test_patch_multi_bet_failure(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_patch_multi_bet_failure(client: TestClient) -> None:
     drop_all_tables()
 
-    created_login = client.post(
-        ROUTES["post_login"],
-        json={
-            "player_name": "Abel Developer",
-            "username": "abel_dev",
-            "password": "ahjfnnjh44fuK5"
-        }
-    )
+    created_login = create_login(client)
+    access_token = await make_login(client)
 
     created_multi_bet = client.post(
         ROUTES["post_multi_bet"],
@@ -186,7 +151,8 @@ def test_patch_multi_bet_failure(client: TestClient) -> None:
             "away_team": "Manchester City",
             "team_bet": None,
             "operator_fee": "0.065"
-        }
+        },
+        headers=headers_acc_tk(Token(access_token)),
     )
 
     patch_multi_bet = client.patch(
@@ -194,7 +160,8 @@ def test_patch_multi_bet_failure(client: TestClient) -> None:
         json={
             "id": 2,
             "bet_status": "success"
-        }
+        },
+        headers=headers_acc_tk(Token(access_token)),
     )
 
     assert created_login.status_code == 204
@@ -209,17 +176,12 @@ def test_patch_multi_bet_failure(client: TestClient) -> None:
     drop_all_tables()
 
 
-def test_get_filter_multi_success(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_get_filter_multi_success(client: TestClient) -> None:
     drop_all_tables()
 
-    created_login = client.post(
-        ROUTES["post_login"],
-        json={
-            "player_name": "Abel Developer",
-            "username": "abel_dev",
-            "password": "ahjfnnjh44fuK5"
-        }
-    )
+    created_login = create_login(client)
+    access_token = await make_login(client)
 
     created_multi_bet = client.post(
         ROUTES["post_multi_bet"],
@@ -237,7 +199,8 @@ def test_get_filter_multi_success(client: TestClient) -> None:
             "away_team": "Manchester City",
             "team_bet": None,
             "operator_fee": "0.065"
-        }
+        },
+        headers=headers_acc_tk(Token(access_token)),
     )
 
     brazil_date = str(get_datetime_brazil().date())
@@ -248,7 +211,8 @@ def test_get_filter_multi_success(client: TestClient) -> None:
             "login_id": 1,
             "date_from": brazil_date,
             "date_to": brazil_date
-        }
+        },
+        headers=headers_acc_tk(Token(access_token)),
     )
 
     assert created_login.status_code == 204
@@ -258,17 +222,12 @@ def test_get_filter_multi_success(client: TestClient) -> None:
     drop_all_tables()
 
 
-def test_get_filter_multi_failure(client: TestClient) -> None:
+@pytest.mark.asyncio
+async def test_get_filter_multi_failure(client: TestClient) -> None:
     drop_all_tables()
 
-    created_login = client.post(
-        ROUTES["post_login"],
-        json={
-            "player_name": "Abel Developer",
-            "username": "abel_dev",
-            "password": "ahjfnnjh44fuK5"
-        }
-    )
+    created_login = create_login(client)
+    access_token = await make_login(client)
 
     created_multi_bet = client.post(
         ROUTES["post_multi_bet"],
@@ -286,7 +245,8 @@ def test_get_filter_multi_failure(client: TestClient) -> None:
             "away_team": "Manchester City",
             "team_bet": None,
             "operator_fee": "0.065"
-        }
+        },
+        headers=headers_acc_tk(Token(access_token)),
     )
 
     brazil_date = str(get_datetime_brazil().date())
@@ -297,7 +257,8 @@ def test_get_filter_multi_failure(client: TestClient) -> None:
             "login_id": 2,
             "date_from": brazil_date,
             "date_to": brazil_date
-        }
+        },
+        headers=headers_acc_tk(Token(access_token)),
     )
 
     assert created_login.status_code == 204

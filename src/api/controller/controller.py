@@ -46,7 +46,7 @@ async def post_single_bet(
     single_bet: SingleBet,
     login_db: LoginDB = Depends(get_logged_user)
 ) -> Any:
-    single_bet.id_login = login_db.id
+    single_bet.id_login = login_db["id"]
     return await Controller.post_single_bet(single_bet)
 
 
@@ -55,7 +55,7 @@ async def post_multi_bet(
     multi_bet: MultiBet,
     login_db: LoginDB = Depends(get_logged_user)
 ) -> Any:
-    multi_bet.id_login = login_db.id
+    multi_bet.id_login = login_db["id"]
     return await Controller.post_multi_bet(multi_bet)
 
 
@@ -80,7 +80,7 @@ async def get_filter_single(
     date_filter: Request,
     login_db: LoginDB = Depends(get_logged_user)
 ) -> Any:
-    date_filter.path_params["login_id"] = login_db.id
+    date_filter.path_params["login_id"] = login_db["id"]
     return await Controller.get_filter_single(date_filter)
 
 
@@ -89,7 +89,7 @@ async def get_filter_multi(
     date_filter: Request,
     login_db: LoginDB = Depends(get_logged_user)
 ) -> Any:
-    date_filter.path_params["login_id"] = login_db.id
+    date_filter.path_params["login_id"] = login_db["id"]
     return await Controller.get_filter_multi(date_filter)
 
 
@@ -98,7 +98,7 @@ async def get_profits_single(
     profits_single: Request,
     login_db: LoginDB = Depends(get_logged_user)
 ) -> Any:
-    profits_single.path_params["login_id"] = login_db.id
+    profits_single.path_params["login_id"] = login_db["id"]
     return await Controller.get_profits_single(profits_single)
 
 
@@ -107,7 +107,7 @@ async def get_profits_multi(
     profits_multi: Request,
     login_db: LoginDB = Depends(get_logged_user)
 ) -> Any:
-    profits_multi.path_params["login_id"] = login_db.id
+    profits_multi.path_params["login_id"] = login_db["id"]
     return await Controller.get_profits_multi(profits_multi)
 
 
@@ -116,7 +116,7 @@ async def get_lost_single(
     lost_single: Request,
     login_db: LoginDB = Depends(get_logged_user)
 ) -> Any:
-    lost_single.path_params["login_id"] = login_db.id
+    lost_single.path_params["login_id"] = login_db["id"]
     return await Controller.get_lost_single(lost_single)
 
 
@@ -125,7 +125,7 @@ async def get_lost_multi(
     lost_multi: Request,
     login_db: LoginDB = Depends(get_logged_user)
 ) -> Any:
-    lost_multi.path_params["login_id"] = login_db.id
+    lost_multi.path_params["login_id"] = login_db["id"]
     return await Controller.get_lost_multi(lost_multi)
 
 
