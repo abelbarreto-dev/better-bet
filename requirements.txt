@@ -22,6 +22,7 @@ pycparser==2.21
 pydantic==1.10.7
 PyMySQL==1.0.3
 pytest==7.3.1
+pytest-asyncio==0.21.0
 python-dotenv==1.0.0
 python-jose==3.3.0
 PyYAML==6.0
