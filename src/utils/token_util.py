@@ -29,7 +29,7 @@ def create_access_token(data: Dict[str, Any]) -> Token:
     return Token(token_jwt)
 
 
-def check_access_token(token: Token) -> None:
+def check_access_token(token: Token) -> str:
     load_dotenv()
 
     secret_key = getenv("SECRET_KEY")

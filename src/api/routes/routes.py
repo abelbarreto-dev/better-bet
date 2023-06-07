@@ -1,4 +1,5 @@
 ROUTES = {
+    "me": "/auth/me",
     "post_login": "/login",
     "post_login_auth": "/login/auth",
     "post_single_bet": "/bet/single",

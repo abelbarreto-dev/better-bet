@@ -1,9 +1,18 @@
-from fastapi import APIRouter, Request
+from fastapi import (
+    APIRouter,
+    Request,
+    Depends,
+)
+
 from typing import Any
 
 from src.api.routes.routes import ROUTES
 
 from src.api.application.application import Controller
+
+from src.api.data.data_model import Login
+
+from src.utils.auth_utils import get_logged_user
 
 from src.api.models.api_models import (
     Login,
@@ -15,6 +24,11 @@ from src.api.models.api_models import (
 
 
 ROUTER = APIRouter()
+
+
+@ROUTER.get(ROUTES["me"])
+async def me(login: Login = Depends(get_logged_user)) -> Any:
+    return login
 
 
 @ROUTER.post(ROUTES["post_login"])
