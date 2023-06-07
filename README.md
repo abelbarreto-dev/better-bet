@@ -215,6 +215,11 @@ means a package.
       <repository>
          __init__.py
       </repository>
+      <utils>
+         __init__.py
+         get_auth_headers.py
+         login_opps.py
+      </utils>
       __init__.py
    </api>
    __init__.py

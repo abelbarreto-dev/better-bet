@@ -9,6 +9,8 @@ from src.utils.create_tables import create_login
 
 from src.utils.exceptions import DataNotFound, BadRequest
 
+from src.utils.token_util import create_access_token
+
 
 class LoginRepository:
     @classmethod
@@ -44,11 +46,13 @@ class LoginRepository:
         except Exception:
             raise DataNotFound("Login Not Found")
 
+        new_token = create_access_token({"sub": login.username})
+
         return JSONResponse(
             content=dict(
                 id=login.id,
                 play_name=login.player_name,
                 username=login.username,
-                password=login.password
+                access_token=new_token
             ),
         )
